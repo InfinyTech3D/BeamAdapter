@@ -18,7 +18,7 @@
 		<MeshTopology name="lines" lines="0 1 1 2 2 3" /> 
 		<FixedConstraint name="FixedConstraint" indices="0" />
 		<BeamInterpolation name="BeamInterpolation" radius="0.1" /> 
-		<AdaptiveBeamForceFieldAndMass name="BeamForceField"  computeMass="1" massDensity="10"/>
+		<AdaptiveBeamForceFieldAndMass name="BeamForceField"  computeMass="1" massDensity="1"/>
 	</Node>  
-	
+    
 </Node>
