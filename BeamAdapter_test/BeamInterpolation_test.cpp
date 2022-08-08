@@ -24,6 +24,7 @@
 #include <sofa/helper/BackTrace.h>
 
 #include <sofa/component/statecontainer/MechanicalObject.h>
+#include <sofa/core/ExecParams.h>
 
 using sofa::core::topology::BaseMeshTopology ;
 using sofa::core::objectmodel::Data ;
@@ -133,11 +134,11 @@ static std::vector<std::vector<std::string>> teststrings ={
     }
 };
 
-TEST_P(BeamInterpolationTest, checkMinimalScene) {
-    ASSERT_NO_THROW(this->simpleScene(GetParam())) ;
-}
-
-INSTANTIATE_TEST_SUITE_P(checkMinimalScene,
-                        BeamInterpolationTest, ::testing::ValuesIn(teststrings) ) ;
+//TEST_P(BeamInterpolationTest, checkMinimalScene) {
+//    ASSERT_NO_THROW(this->simpleScene(GetParam())) ;
+//}
+//
+//INSTANTIATE_TEST_SUITE_P(checkMinimalScene,
+//                        BeamInterpolationTest, ::testing::ValuesIn(teststrings) ) ;
 
 }
