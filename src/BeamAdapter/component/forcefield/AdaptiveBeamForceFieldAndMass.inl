@@ -350,7 +350,7 @@ template<class DataTypes>
 void AdaptiveBeamForceFieldAndMass<DataTypes>::addMToMatrix(const MechanicalParams *mparams,
                                                             const MultiMatrixAccessor* matrix)
 {
-    MultiMatrixAccessor::MatrixRef r = matrix->getMatrix(this->mstate);
+    MultiMatrixAccessor::MatrixRef r = matrix->getMatrix(mstate);
     Real mFact = (Real)mparams->mFactor();
 
     unsigned int numBeams = l_interpolation->getNumBeams();
@@ -392,7 +392,7 @@ template<class DataTypes>
 void AdaptiveBeamForceFieldAndMass<DataTypes>::addMBKToMatrix(const MechanicalParams* mparams,
                                                               const MultiMatrixAccessor* matrix)
 {
-    MultiMatrixAccessor::MatrixRef r = matrix->getMatrix(this->mstate);
+    MultiMatrixAccessor::MatrixRef r = matrix->getMatrix(mstate);
     Real kFact = (Real)mparams->kFactor();
     Real mFact = (Real)mparams->mFactor();
 
