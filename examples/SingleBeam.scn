@@ -15,8 +15,8 @@
 	<Node name="BeamModel">
 		<EulerImplicitSolver rayleighStiffness="0" rayleighMass="0" printLog="false" />
 		<BTDLinearSolver verbose="0"/>
-		<MechanicalObject template="Rigid3d" name="DOFs" position="0 0 0 0 0 0 1  2 0 0 0 0 0 1  4 0 0 0 0 0 1  6 0 0 0 0 0 1"/> 
-		<MeshTopology name="lines" lines="0 1 1 2 2 3" /> 
+        <RegularGridTopology name='MeshLines' nx='200' ny='1' nz='1' xmax='100' xmin='0' ymin='0' ymax='0' zmax='0' zmin='0'/>
+		<MechanicalObject template='Rigid3d' name='DOFs' />
 		<FixedConstraint name="FixedConstraint" indices="0" />
 		<BeamInterpolation name="BeamInterpolation" radius="0.1" /> 
 		<AdaptiveBeamForceFieldAndMass name="BeamForceField"  computeMass="1" massDensity="10"/>
