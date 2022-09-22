@@ -72,6 +72,8 @@ InterventionalRadiologyController<DataTypes>::InterventionalRadiologyController(
 , d_motionFilename(initData(&d_motionFilename, "motionFilename", "text file that includes tracked motion from optical sensor"))
 , d_indexFirstNode(initData(&d_indexFirstNode, (unsigned int) 0, "indexFirstNode", "first node (should be fixed with restshape)"))
 , d_curvAbs(initData(&d_curvAbs,"CurvAbs", "curvi-linear abscissa of the DOFs" ))
+, d_actions(initData(&d_actions, "actions", "List of actions to script the intervention"))
+, d_timeSteps(initData(&d_timeSteps, "timeSteps", "List of time to change the action"))
 {
     m_fixedConstraint = nullptr;
     m_dropCall = false;
@@ -333,55 +335,117 @@ void InterventionalRadiologyController<DataTypes>::onKeyPressedEvent(KeypressedE
 }
 
 
+
+
 template <class DataTypes>
 void InterventionalRadiologyController<DataTypes>::onBeginAnimationStep(const double dt)
 {
     SOFA_UNUSED(dt);
 
-    BaseContext* context = getContext();
-    auto xInstrTip = sofa::helper::getWriteOnlyAccessor(d_xTip);
-    if(m_FF || m_RW)
+    const type::vector<Real>& times = d_timeSteps.getValue();
+    if (!times.empty())
     {
+        if (readStep < times.size())
+        {
+            Real time = times[readStep];
+            if (getContext()->getTime() >= time) // check if another key time has been reached and change action
+            {
+                currAction = d_actions.getValue()[readStep];
+                readStep++;
+            }
+        }
+
+        std::cout << "action: " << currAction << std::endl;
+
         int id = d_controlledInstrument.getValue();
+        auto xInstrTip = sofa::helper::getWriteOnlyAccessor(d_xTip);
         if (id >= (int)xInstrTip.size())
         {
-            msg_warning()<<"Controlled Instument num "<<id<<" does not exist (size ="<< xInstrTip.size() <<") use instrument 0 instead";
-            id=0;
+            msg_warning() << "Controlled Instument num " << id << " does not exist (size =" << xInstrTip.size() << ") use instrument 0 instead";
+            id = 0;
         }
-        if (m_FF)
-        {
-            if (!m_sensored)
-                xInstrTip[id] += d_speed.getValue() * context->getDt();
-        else
-            {
-                unsigned int newSensorData = m_currentSensorData + 1;
 
-                while( m_sensorMotionData[newSensorData][0] < context->getTime() )
-                {
-                    m_currentSensorData = newSensorData;
-                    newSensorData++;
-                }
-                if(newSensorData >= m_sensorMotionData.size())
-                {
-                    xInstrTip[id] = 0;
-                }
-                else
-                {
-                    xInstrTip[id] += m_sensorMotionData[m_currentSensorData][1];
-                }
-            }
-        }
-        if (m_RW)
+        switch (currAction)
         {
-            xInstrTip[id] -= d_speed.getValue()* context->getDt();
-            // verif min x :
-            if ( xInstrTip[id] < 0.0)
-            {
-                xInstrTip[id] = 0.0;
-                m_RW = false;
-            }
+        case 0: // move forward
+            xInstrTip[id] += d_step.getValue();
+            break;
+        case 1: // move backward
+            xInstrTip[id] -= d_step.getValue();
+            break;
+        case -1:
+            //xInstrTip[id] = 0.0;
+            break;
+        case 9:
+        {
+            if (2 >= (int)m_instrumentsList.size() && f_printLog.getValue())
+                msg_warning() << "Controlled Instument num 2 do not exist (size =" << m_instrumentsList.size() << ") do not change the instrument id";
+            else
+                d_controlledInstrument.setValue(2);
+        }
+        break;
+        case 8:
+        {
+            if (1 >= (int)m_instrumentsList.size() && f_printLog.getValue())
+                msg_warning() << "Controlled Instument num 1 do not exist (size =" << m_instrumentsList.size() << ") do not change the instrument id";
+            else
+                d_controlledInstrument.setValue(1);
+        }
+        break;
+
+        case 7:
+            d_controlledInstrument.setValue(0);
+            break;
+
+        default:
+            break;
         }
     }
+
+    //BaseContext* context = getContext();
+    auto xInstrTip = sofa::helper::getWriteOnlyAccessor(d_xTip);
+    //if(false || m_FF || m_RW)
+    //{
+    //    int id = d_controlledInstrument.getValue();
+    //    if (id >= (int)xInstrTip.size())
+    //    {
+    //        msg_warning()<<"Controlled Instument num "<<id<<" does not exist (size ="<< xInstrTip.size() <<") use instrument 0 instead";
+    //        id=0;
+    //    }
+    //    if (m_FF)
+    //    {
+    //        if (!m_sensored)
+    //            xInstrTip[id] += d_speed.getValue() * context->getDt();
+    //    else
+    //        {
+    //            unsigned int newSensorData = m_currentSensorData + 1;
+
+    //            while( m_sensorMotionData[newSensorData][0] < context->getTime() )
+    //            {
+    //                m_currentSensorData = newSensorData;
+    //                newSensorData++;
+    //            }
+    //            if(newSensorData >= m_sensorMotionData.size())
+    //            {
+    //                xInstrTip[id] = 0;
+    //            }
+    //            else
+    //            {
+    //                xInstrTip[id] += m_sensorMotionData[m_currentSensorData][1];
+    //            }
+    //        }
+    //    }
+    //    if (m_RW)
+    //    {
+    //        xInstrTip[id] -= d_speed.getValue()* context->getDt();
+    //        // verif min x :
+    //        if ( xInstrTip[id] < 0.0)
+    //        {
+    //            xInstrTip[id] = 0.0;
+    //            m_RW = false;
+    //        }
+    //    }
+    //}
 
     /// The tip of the instrument can not be further than its total length
     for (unsigned int i=0; i<m_instrumentsList.size(); i++)

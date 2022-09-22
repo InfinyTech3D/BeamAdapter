@@ -98,6 +98,7 @@ public:
     virtual void onMouseEvent(core::objectmodel::MouseEvent *) override ;
     virtual void onKeyPressedEvent(core::objectmodel::KeypressedEvent *) override ;
     virtual void onBeginAnimationStep(const double dt) override ;
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -149,6 +150,11 @@ public:
     Data<std::string>    d_motionFilename;
     Data<unsigned int>   d_indexFirstNode; // First Node simulated
     Data<type::vector<Real>>   d_curvAbs;
+
+    Data <type::vector<int> > d_actions;
+    Data <type::vector<Real> > d_timeSteps;
+    int readStep = 0;
+    int currAction = -1;
 
     bool m_FF, m_RW, m_sensored;
     FixedConstraint<DataTypes> *    m_fixedConstraint;
