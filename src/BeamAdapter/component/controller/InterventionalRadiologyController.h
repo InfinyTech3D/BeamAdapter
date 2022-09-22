@@ -155,11 +155,6 @@ public:
     Data<unsigned int>   d_indexFirstNode; // First Node simulated
     Data<type::vector<Real>>   d_curvAbs;
 
-    Data <type::vector<int> > d_actions;
-    Data <type::vector<Real> > d_timeSteps;
-    int readStep = 0;
-    int currAction = -1;
-
     bool m_FF, m_RW, m_sensored;
     FixedConstraint<DataTypes> *    m_fixedConstraint;
     type::vector<int>                     m_droppedInstruments;
