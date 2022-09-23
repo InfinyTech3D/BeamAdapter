@@ -765,7 +765,7 @@ void InterventionalRadiologyController<DataTypes>::applyInterventionalRadiologyC
     type::vector<Real> xbegin;
     for (unsigned int i=0; i<m_instrumentsList.size(); i++)
     {
-         xend= d_xTip.getValue()[i];
+        xend= d_xTip.getValue()[i];
         Real xb = xend - m_instrumentsList[i]->getRestTotalLength();
         xbegin.push_back(xb);
 
@@ -810,8 +810,8 @@ void InterventionalRadiologyController<DataTypes>::applyInterventionalRadiologyC
     /// STEP 3
     /// Re-interpolate the positions and the velocities
     helper::AdvancedTimer::stepBegin("step3");
-    unsigned int nbeam=newCurvAbs.size()-1; // number of simulated beams
-    unsigned int nnode=newCurvAbs.size(); // number of simulated nodes
+    unsigned int nbrBeam = newCurvAbs.size() - 1; // number of simulated beams
+    unsigned int nbrNode = newCurvAbs.size(); // number of simulated nodes
 
     unsigned int nnode_old= m_nodeCurvAbs.size(); // previous number of simulated nodes;
     Data<VecCoord>* datax = this->getMechanicalState()->write(core::VecCoordId::position());                
@@ -825,9 +825,11 @@ void InterventionalRadiologyController<DataTypes>::applyInterventionalRadiologyC
 
     Real xmax_prev = m_nodeCurvAbs[m_nodeCurvAbs.size()-1];
 
-    for (unsigned int p=0; p<nbeam+1; p++)
+    const Real& threshold = d_threshold.getValue();
+
+    for (unsigned int p=0; p< nbrNode; p++)
     {
-        int idP = m_numControlledNodes-nnode + p;
+        int idP = m_numControlledNodes - nbrNode + p;
         Real xabs = modifiedCurvAbs[p];
 
         // 2 cases:  TODO : remove first case
@@ -849,14 +851,14 @@ void InterventionalRadiologyController<DataTypes>::applyInterventionalRadiologyC
             unsigned int p0=0;
             while(p0<m_nodeCurvAbs.size())
             {
-                if((m_nodeCurvAbs[p0]+d_threshold.getValue())>xabs)
+                if((m_nodeCurvAbs[p0]+ threshold)>xabs)
                     break;
                 p0++;
             }
 
             int idP0 =  previousNumControlledNodes + seg_remove - nnode_old + p0 ;
 
-            if(fabs(m_nodeCurvAbs[p0]-xabs)<d_threshold.getValue())
+            if(fabs(m_nodeCurvAbs[p0]-xabs)< threshold)
                 x[idP] = xbuf[idP0];
             else
             {
@@ -894,17 +896,17 @@ void InterventionalRadiologyController<DataTypes>::applyInterventionalRadiologyC
     unsigned int numEdges= m_numControlledNodes-1;
 
     // verify that there is a sufficient number of Edge in the topology : TODO if not, modify topo !
-    if(numEdges<nbeam)
+    if (numEdges<nbrBeam)
     {
         if (f_printLog.getValue())
         {
             msg_error()<<"Not enough edges in the topology.";
         }
-        nbeam=numEdges;
+        nbrBeam = numEdges;
     }
 
 
-    for (unsigned int b=0; b<nbeam; b++)
+    for (unsigned int b=0; b< nbrBeam; b++)
     {
         Real x0 = newCurvAbs[b];
         Real x1 = newCurvAbs[b+1];
@@ -913,11 +915,9 @@ void InterventionalRadiologyController<DataTypes>::applyInterventionalRadiologyC
             Real xmax = d_xTip.getValue()[i];
             Real xmin = xbegin[i];
 
-            Real eps= d_threshold.getValue();
-
-            if (x0>(xmin-eps) && x0<(xmax+eps) && x1>(xmin-eps) && x1<(xmax+eps))
+            if (x0>(xmin- threshold) && x0<(xmax+ threshold) && x1>(xmin- threshold) && x1<(xmax+ threshold))
             {
-                BaseMeshTopology::EdgeID eID = (BaseMeshTopology::EdgeID)(numEdges-nbeam + b );
+                BaseMeshTopology::EdgeID eID = (BaseMeshTopology::EdgeID)(numEdges- nbrBeam + b );
 
                 Real length = x1 - x0;
                 Real x0_local = x0-xmin;
@@ -935,7 +935,7 @@ void InterventionalRadiologyController<DataTypes>::applyInterventionalRadiologyC
     /// STEP 5
     /// Fix the not simulated nodes
     helper::AdvancedTimer::stepBegin("step5");
-    unsigned int firstSimulatedNode = m_numControlledNodes - nbeam;
+    unsigned int firstSimulatedNode = m_numControlledNodes - nbrBeam;
 
     //1. Fix the nodes (beginning of the instruments) that are not "out"
     fixFirstNodesWithUntil(firstSimulatedNode);

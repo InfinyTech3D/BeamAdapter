@@ -295,7 +295,8 @@ void WireRestShape<DataTypes>::init()
 
 
 template <class DataTypes>
-void WireRestShape<DataTypes>::releaseWirePart(){
+void WireRestShape<DataTypes>::releaseWirePart()
+{
 
     d_brokenIn2.setValue(true);
 
