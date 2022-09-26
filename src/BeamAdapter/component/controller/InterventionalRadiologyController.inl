@@ -796,7 +796,7 @@ void InterventionalRadiologyController<DataTypes>::applyInterventionalRadiologyC
     //     => xbegin (theoritical curv abs of the beginning point of the instrument (could be negative) xbegin= xtip - intrumentLength)
     helper::AdvancedTimer::stepBegin("step2");
     type::vector<type::vector<int>> idInstrumentTable;
-    interventionalRadiologyComputeSampling(newCurvAbs,idInstrumentTable, xbegin, totalLengthCombined);
+    interventionalRadiologyComputeSampling(newCurvAbs, idInstrumentTable, xbegin, totalLengthCombined);
     helper::AdvancedTimer::stepEnd("step2");
 
 
@@ -828,7 +828,7 @@ void InterventionalRadiologyController<DataTypes>::applyInterventionalRadiologyC
         // 2 cases:  TODO : remove first case
             //1. the abs curv is further than the previous state of the instrument
             //2. this is not the case and the node position can be interpolated using previous step positions
-        if(xabs > xmax_prev + d_threshold.getValue())
+        if(xabs > xmax_prev + threshold)
         {
             msg_error_when(f_printLog.getValue())
                 << "case 1 should never happen ==> avoid using totalLengthIsChanging ! xabs = " << xabs << " - xmax_prev = " << xmax_prev
@@ -992,26 +992,34 @@ void InterventionalRadiologyController<DataTypes>::totalLengthIsChanging(const t
     // we initialize some points at a x_curv ref pos without the motion (computed by DLength)
     // due to the elasticity of the beam, the point will then naturally go the position that reespects the newNodeCurvAbs
 
-    Real dLength = newNodeCurvAbs[ newNodeCurvAbs.size()-1] - m_nodeCurvAbs[m_nodeCurvAbs.size() - 1];
+    Real dLength = newNodeCurvAbs.back() - m_nodeCurvAbs.back();
     modifiedNodeCurvAbs = newNodeCurvAbs;
-
+    //std::cout << "#### avant: " << modifiedNodeCurvAbs << std::endl;
+    //std::cout << "dLength: " << dLength << std::endl;
     // we look for the last value in the CurvAbs
     if(fabs(dLength) > d_threshold.getValue())
     {
         unsigned int i=newTable.size()-1;
+        //std::cout << "newTable.size()-1: " << newTable.size() - 1 << std::endl;
         while (i>0 && newTable[i].size()==1)
         {
+            //std::cout << "#modifiedNodeCurvAbs[i]: " << modifiedNodeCurvAbs[i] << std::endl;
             modifiedNodeCurvAbs[i]-=dLength;
 
             // force modifiedNode to be "locally" sorted
             if(modifiedNodeCurvAbs[i]<modifiedNodeCurvAbs[i-1])
             {
+                //std::cout << "PASSE LA " << std::endl;
                modifiedNodeCurvAbs[i] = modifiedNodeCurvAbs[i-1]+ d_threshold.getValue();
             }
+
 
             i--;
         }
     }
+
+
+    //std::cout << "#### apres: " << modifiedNodeCurvAbs << std::endl;
 }
 
 template <class DataTypes>
