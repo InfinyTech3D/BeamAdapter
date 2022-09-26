@@ -113,6 +113,8 @@ public:
 
     void applyAction(sofa::beamadapter::BeamAdapterAction action);
 
+    /// Getter to the tools curviline abscisses sorted @sa m_nodeCurvAbs at the current timestep.
+    [[nodiscard]] const type::vector<Real>& getCurrentCurvAbscisses() const { return m_nodeCurvAbs; }
 
 public:
 
@@ -151,7 +153,8 @@ public:
     Data<type::vector<Real>>   d_rigidCurvAbs; // Pairs (start - end)
     Data<std::string>    d_motionFilename;
     Data<unsigned int>   d_indexFirstNode; // First Node simulated
-    Data<type::vector<Real>>   d_curvAbs;
+    
+    
 
     bool m_FF, m_RW, m_sensored;
     FixedConstraint<DataTypes> *    m_fixedConstraint;
