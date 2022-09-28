@@ -994,32 +994,24 @@ void InterventionalRadiologyController<DataTypes>::totalLengthIsChanging(const t
 
     Real dLength = newNodeCurvAbs.back() - m_nodeCurvAbs.back();
     modifiedNodeCurvAbs = newNodeCurvAbs;
-    //std::cout << "#### avant: " << modifiedNodeCurvAbs << std::endl;
-    //std::cout << "dLength: " << dLength << std::endl;
+
     // we look for the last value in the CurvAbs
     if(fabs(dLength) > d_threshold.getValue())
     {
         unsigned int i=newTable.size()-1;
-        //std::cout << "newTable.size()-1: " << newTable.size() - 1 << std::endl;
         while (i>0 && newTable[i].size()==1)
         {
-            //std::cout << "#modifiedNodeCurvAbs[i]: " << modifiedNodeCurvAbs[i] << std::endl;
             modifiedNodeCurvAbs[i]-=dLength;
 
             // force modifiedNode to be "locally" sorted
             if(modifiedNodeCurvAbs[i]<modifiedNodeCurvAbs[i-1])
             {
-                //std::cout << "PASSE LA " << std::endl;
                modifiedNodeCurvAbs[i] = modifiedNodeCurvAbs[i-1]+ d_threshold.getValue();
             }
-
 
             i--;
         }
     }
-
-
-    //std::cout << "#### apres: " << modifiedNodeCurvAbs << std::endl;
 }
 
 template <class DataTypes>
