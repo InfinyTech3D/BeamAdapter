@@ -149,6 +149,8 @@ public:
     Data<double> d_nbPointsPerBeam;		  /*!< if non zero, we will adapt the points depending on the discretization, with this num of points per beam (compatible with useCurvAbs)*/
     Data<type::vector<Real>> d_segmentsCurvAbs; /*!< (output) the abscissa of each created point on the collision model */
 
+    Data<bool> d_onlyVisual;
+
     SingleLink<AdaptiveBeamMapping<TIn, TOut>,
                BInterpolation, BaseLink::FLAG_STOREPATH|BaseLink::FLAG_STRONGLINK> l_adaptativebeamInterpolation;
 

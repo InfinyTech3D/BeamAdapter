@@ -73,6 +73,7 @@ AdaptiveBeamMapping<TIn,TOut>::AdaptiveBeamMapping(State< In >* from, State< Out
     , d_inputMapName(initData(&d_inputMapName,"nameOfInputMap", "if contactDuplicate==true, it provides the name of the input mapping"))
     , d_nbPointsPerBeam(initData(&d_nbPointsPerBeam, 0.0, "nbPointsPerBeam", "if non zero, we will adapt the points depending on the discretization, with this num of points per beam (compatible with useCurvAbs)"))
     , d_segmentsCurvAbs(initData(&d_segmentsCurvAbs, "segmentsCurvAbs", "the abscissa of each point on the collision model", true, true))
+    , d_onlyVisual(initData(&d_onlyVisual, (bool)false, "onlyVisual", "Really not mechanical mapping"))
     , l_adaptativebeamInterpolation(initLink("interpolation", "Path to the Interpolation component on scene"), interpolation)
     , m_inputMapping(nullptr)
     , m_isSubMapping(isSubMapping)
@@ -258,6 +259,9 @@ void AdaptiveBeamMapping< TIn, TOut>::apply(const MechanicalParams* mparams, Dat
 template <class TIn, class TOut>
 void AdaptiveBeamMapping< TIn, TOut>::applyJ(const core::MechanicalParams* mparams, Data<VecDeriv>& dOut, const Data<InVecDeriv>& dIn)
 {
+    if (d_onlyVisual.getValue())
+        return;
+
     SOFA_UNUSED(mparams);
     ScopedAdvancedTimer timer("AdaptiveBeamMapping_applyJ");
 
@@ -329,6 +333,9 @@ void AdaptiveBeamMapping< TIn, TOut>::applyJ(const core::MechanicalParams* mpara
 template <class TIn, class TOut>
 void AdaptiveBeamMapping< TIn, TOut>::applyJT(const core::MechanicalParams* mparams, Data<InVecDeriv>& dOut, const Data<VecDeriv>& dIn)
 {
+    if (d_onlyVisual.getValue())
+        return;
+
     SOFA_UNUSED(mparams);
 
     ScopedAdvancedTimer timer("AdaptiveBeamMapping_applyJT");
