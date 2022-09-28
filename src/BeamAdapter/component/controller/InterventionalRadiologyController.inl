@@ -740,6 +740,8 @@ void InterventionalRadiologyController<DataTypes>::activateBeamListForCollision(
 template <class DataTypes>
 void InterventionalRadiologyController<DataTypes>::applyInterventionalRadiologyController()
 {
+    const Real& threshold = d_threshold.getValue();
+
     /// Create vectors with the CurvAbs of the noticiable points and the id of the corresponding instrument
     type::vector<Real> newCurvAbs;
 
@@ -803,37 +805,38 @@ void InterventionalRadiologyController<DataTypes>::applyInterventionalRadiologyC
     /// STEP 3
     /// Re-interpolate the positions and the velocities
     helper::AdvancedTimer::stepBegin("step3");
-    unsigned int nbrBeam = newCurvAbs.size() - 1; // number of simulated beams
-    unsigned int nbrNode = newCurvAbs.size(); // number of simulated nodes
 
-    unsigned int nnode_old= m_nodeCurvAbs.size(); // previous number of simulated nodes;
-    Data<VecCoord>* datax = this->getMechanicalState()->write(core::VecCoordId::position());                
+    // Get write access to current nodes/dofs
+    Data<VecCoord>* datax = this->getMechanicalState()->write(core::VecCoordId::position());
     auto x = sofa::helper::getWriteOnlyAccessor(*datax);
+    VecCoord xbuf = x;
 
-    VecCoord xbuf =x;
-
+    const sofa::Size nbrCurvAbs = newCurvAbs.size(); // number of simulated nodes
+    const sofa::Size prev_nbrCurvAbs = m_nodeCurvAbs.size(); // previous number of simulated nodes;
+    const Real prev_maxCurvAbs = m_nodeCurvAbs.back();
+           
+    // Change curv if totalLength has changed: modifiedCurvAbs = newCurvAbs - current motion (Length between new and old tip curvAbs)
     type::vector<Real> modifiedCurvAbs;
-
     totalLengthIsChanging(newCurvAbs, modifiedCurvAbs, idInstrumentTable);
 
-    Real xmax_prev = m_nodeCurvAbs[m_nodeCurvAbs.size()-1];
+    sofa::Size nbrUnactiveNode = m_numControlledNodes - nbrCurvAbs; // m_numControlledNodes == nbr Dof | nbr of CurvAbs > 0
+    sofa::Size prev_nbrUnactiveNode = previousNumControlledNodes - prev_nbrCurvAbs;
 
-    const Real& threshold = d_threshold.getValue();
-
-    for (unsigned int p=0; p< nbrNode; p++)
+    for (sofa::Index xId = 0; xId < nbrCurvAbs; xId++)
     {
-        int idP = m_numControlledNodes - nbrNode + p;
-        Real xabs = modifiedCurvAbs[p];
+        const sofa::Index globalNodeId = nbrUnactiveNode + xId;
+        const Real xCurvAbs = modifiedCurvAbs[xId];
 
         // 2 cases:  TODO : remove first case
             //1. the abs curv is further than the previous state of the instrument
             //2. this is not the case and the node position can be interpolated using previous step positions
-        if(xabs > xmax_prev + threshold)
+        if (xCurvAbs > prev_maxCurvAbs + threshold)
         {
-            msg_error_when(f_printLog.getValue())
-                << "case 1 should never happen ==> avoid using totalLengthIsChanging ! xabs = " << xabs << " - xmax_prev = " << xmax_prev
-                << "newCurvAbs  = " << newCurvAbs << "  previous nodeCurvAbs" << m_nodeCurvAbs
-                << "modifiedCurvAbs =" << modifiedCurvAbs;
+            msg_error() << "Case 1 should never happen ==> avoid using totalLengthIsChanging! xCurvAbs = " << xCurvAbs 
+                << " > prev_maxCurvAbs = " << prev_maxCurvAbs << " + threshold: " << threshold << "\n"
+                << "\n | newCurvAbs: " << newCurvAbs                
+                << "\n | modifiedCurvAbs: " << modifiedCurvAbs
+                << "\n | previous nodeCurvAbs: " << m_nodeCurvAbs;
             // case 1 (the abs curv is further than the previous state of the instrument)
             // verifier qu'il s'agit bien d'un instrument qu'on est en train de controller
             // interpoler toutes les positions "sorties" de l'instrument en supprimant l'ajout de dx qu'on vient de faire
@@ -841,41 +844,50 @@ void InterventionalRadiologyController<DataTypes>::applyInterventionalRadiologyC
         else
         {
             // case 2 (the node position can be interpolated straightfully using previous step positions)
-            unsigned int p0=0;
-            while(p0<m_nodeCurvAbs.size())
+            sofa::Index prev_xId = 0;
+            while (prev_xId < m_nodeCurvAbs.size()) // check which prev_curvAbs is above current curvAbs using threshold value
             {
-                if((m_nodeCurvAbs[p0]+ threshold)>xabs)
+                if ((m_nodeCurvAbs[prev_xId] + threshold) > xCurvAbs)
                     break;
-                p0++;
+                prev_xId++;
             }
 
-            int idP0 =  previousNumControlledNodes + seg_remove - nnode_old + p0 ;
+            sofa::Index prev_globalNodeId = prev_nbrUnactiveNode + seg_remove + prev_xId;
+            const Real prev_xCurvAbs = m_nodeCurvAbs[prev_xId];
 
-            if(fabs(m_nodeCurvAbs[p0]-xabs)< threshold)
-                x[idP] = xbuf[idP0];
+            if (fabs(prev_xCurvAbs - xCurvAbs) < threshold)
+            {
+                x[globalNodeId] = xbuf[prev_globalNodeId];
+            }
             else
             {
                 // the node must be interpolated using beam interpolation
-                    //find the instrument
-                int id = m_idInstrumentCurvAbsTable[p0][0];
+                //find the instrument
+                int id = m_idInstrumentCurvAbsTable[prev_xId][0];
                 //find the good beam (TODO: do not work if xbegin of one instrument >0)
-                int b = p0-1;
+                int b = prev_xId - 1;
                 // test to avoid wrong indices
-                if (b<0)
-                    x[p]=d_startingPos.getValue();
+                if (b < 0)
+                    x[globalNodeId] = d_startingPos.getValue();
                 else
                 {
                     Transform global_H_interpol;
-                    Real ratio = (xabs - m_nodeCurvAbs[b])/ (m_nodeCurvAbs[p0]-m_nodeCurvAbs[b]);
-                    Transform Global_H_local0(xbuf[idP0-1].getCenter(),xbuf[idP0-1].getOrientation() ), Global_H_local1(xbuf[idP0].getCenter(),xbuf[idP0].getOrientation() );
+                    const Real L = prev_xCurvAbs - m_nodeCurvAbs[b];
+                    Real baryCoef = 1.0;
+                    if (L < 0.0001) {
+                        msg_error() << "Two consecutives curvAbs with the same position. Length is null. Using barycenter coefficient: baryCoef = 1";
+                    }
+                    else {
+                        baryCoef = (xCurvAbs - m_nodeCurvAbs[b]) / L;
+                    }
 
-                    Real L = m_nodeCurvAbs[p0] - m_nodeCurvAbs[b];
+                    Transform Global_H_local0(xbuf[prev_globalNodeId - 1].getCenter(), xbuf[prev_globalNodeId - 1].getOrientation());
+                    Transform Global_H_local1(xbuf[prev_globalNodeId].getCenter(), xbuf[prev_globalNodeId].getOrientation());
 
-                    m_instrumentsList[id]->InterpolateTransformUsingSpline(global_H_interpol, ratio, Global_H_local0, Global_H_local1 ,L);
+                    m_instrumentsList[id]->InterpolateTransformUsingSpline(global_H_interpol, baryCoef, Global_H_local0, Global_H_local1, L);
 
-                    x[idP].getCenter() = global_H_interpol.getOrigin();
-                    x[idP].getOrientation() = global_H_interpol.getOrientation();
-
+                    x[globalNodeId].getCenter() = global_H_interpol.getOrigin();
+                    x[globalNodeId].getOrientation() = global_H_interpol.getOrientation();
                 }
             }
         }
@@ -886,6 +898,7 @@ void InterventionalRadiologyController<DataTypes>::applyInterventionalRadiologyC
     /// STEP 4
     /// Assign the beams
     helper::AdvancedTimer::stepBegin("step4");
+    sofa::Size nbrBeam = newCurvAbs.size() - 1; // number of simulated beams
     unsigned int numEdges= m_numControlledNodes-1;
 
     // verify that there is a sufficient number of Edge in the topology : TODO if not, modify topo !
