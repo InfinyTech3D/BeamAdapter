@@ -154,6 +154,8 @@ public:
     Data<type::vector<Real>> d_segmentsCurvAbs; /*!< (output) the abscissa of each created point on the collision model */
     Data<bool> d_parallelMapping;           /*!< flag to enable parallel internal computation of apply/applyJ */
 
+    Data<bool> d_onlyVisual;
+
     SingleLink<AdaptiveBeamMapping<TIn, TOut>,
                BInterpolation, BaseLink::FLAG_STOREPATH|BaseLink::FLAG_STRONGLINK> l_adaptativebeamInterpolation;
 
