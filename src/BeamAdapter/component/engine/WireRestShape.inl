@@ -74,7 +74,6 @@ WireRestShape<DataTypes>::WireRestShape() :
   , l_sectionMaterial2(initLink("extremity_material", "link to the second Wire Section Material"))
   , l_topology(initLink("topology", "link to the topology container"))
   , l_loader(initLink("loader", "link to the MeshLoader"))
-  , l_edge2QuadMapping(initLink("edge2QuadMapping", "link to the edge2QuadMapping to render this beam"))
 {
     d_spireDiameter.setGroup("Procedural");
     d_spireHeight.setGroup("Procedural");
