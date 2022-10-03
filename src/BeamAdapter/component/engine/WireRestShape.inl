@@ -247,12 +247,16 @@ void WireRestShape<DataTypes>::initTopology()
     Real dx1 = straightLength / nbrEdges1;
 
     /// add points from main material
-    for (int i = 0; i < nbrEdges1 + 1; i++)
+    for (int i = 0; i < nbrEdges1 + 1; i++) {
         _topology->addPoint(i * dx1, 0, 0);
+        //std::cout << "1. addPoint: " << i << " -> " << i * dx1 << std::endl;
+    }
 
     /// add segments from main material
-    for (int i = 0; i < nbrEdges1; i++)
+    for (int i = 0; i < nbrEdges1; i++) {
         _topology->addEdge(i, i + 1);
+        //std::cout << "1. addEdge: " << i << " - " << i + 1 << std::endl;
+    }
 
 
     // Add topology of the second material 
@@ -263,12 +267,16 @@ void WireRestShape<DataTypes>::initTopology()
         Real dx2 = lengthExtremity / nbrEdges2;
 
         /// add points from main material
-        for (int i = 0; i < nbrEdges2 + 1; i++)
+        for (int i = 1; i < nbrEdges2 + 1; i++) {
             _topology->addPoint(straightLength + i * dx2, 0, 0);
+            //std::cout << "2. addPoint: " << i + nbrEdges1 << " -> " << straightLength + i * dx2 << std::endl;
+        }
 
         /// add segments from main material
-        for (int i = nbrEdges1 + 1; i < nbrEdges1 + nbrEdges2 + 2; i++)
-            _topology->addEdge(i, i + 1);        
+        for (int i = nbrEdges1; i < nbrEdges1 + nbrEdges2; i++) {
+            _topology->addEdge(i, i + 1);
+            //std::cout << "2. addEdge: " << i << " - " << i + 1 << std::endl;
+        }
     }
 }
 
@@ -356,15 +364,20 @@ void WireRestShape<DataTypes>::getCollisionSampling(Real &dx, const Real &x_curv
     //    return;
     //}
 
-    if (x_used < d_straightLength.getValue())
+    if (x_used <= d_straightLength.getValue())
     {
         numLines = l_sectionMaterial1.get()->getNbCollisionEdges();
         dx = d_straightLength.getValue() / numLines;
     }
-    else if (x_used < d_length.getValue())
+    else if (x_used <= d_length.getValue())
     {
         numLines = l_sectionMaterial2.get()->getNbCollisionEdges();
         dx = d_length.getValue() / numLines;
+    }
+    else
+    {
+        dx = d_length.getValue() / 20;
+        msg_error() << " problem is  getCollisionSampling : x_curv " << x_used << " is not between keyPoints" << d_keyPoints.getValue();
     }
 
     //for (unsigned int i=1; i<this->d_keyPoints.getValue().size(); i++)
@@ -377,8 +390,6 @@ void WireRestShape<DataTypes>::getCollisionSampling(Real &dx, const Real &x_curv
     //    }
     //}
 
-    dx=d_length.getValue()/20;
-    msg_error() << " problem is  getCollisionSampling : x_curv "<<x_used<<" is not between keyPoints"<<d_keyPoints.getValue() ;
 }
 
 
