@@ -15,11 +15,12 @@
     <DefaultVisualManagerLoop />
 
     <Node name="EdgeTopology">
-        <WireRestShape name="BeamRestShape" straightLength="980.0" length="1000.0"
-                                 numEdges="200" youngModulus="20000"
-                                 spireDiameter="25" numEdgesCollis="50 10"
-                                 printLog="1" template="Rigid3d" spireHeight="0.0"
-                                 densityOfBeams="30 5" youngModulusExtremity="20000" />
+        <WireSectionMaterial name="WireMat1" youngModulus="20000" radius="1" massDensity="0.1" poissonRatio="0.3" nbEdgesCollis="50" nbEdgesVisu="200"/>
+        <WireSectionMaterial name="WireMat2" youngModulus="20000" radius="1" massDensity="0.1" poissonRatio="0.3" nbEdgesCollis="10" nbEdgesVisu="200"/>
+        <WireRestShape name="BeamRestShape" printLog="1" straightLength="980.0" length="1000.0"
+                                 spireDiameter="25" spireHeight="0.0"
+                                 template="Rigid3d" densityOfBeams="30 5" 
+                                 wireMaterials="@WireMat1 @WireMat2"/>
         <EdgeSetTopologyContainer name="meshLinesBeam"/>
         <EdgeSetTopologyModifier name="Modifier"/> 
         <EdgeSetGeometryAlgorithms name="GeomAlgo" template="Rigid3d" /> 
