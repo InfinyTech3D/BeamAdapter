@@ -68,22 +68,11 @@ WireRestShape<DataTypes>::WireRestShape() :
   , d_spireHeight(initData(&d_spireHeight, (Real)0.01, "spireHeight", "height between each spire"))
   , d_density(initData(&d_density, "densityOfBeams", "density of beams between key points"))
   , d_keyPoints(initData(&d_keyPoints,"keyPoints","key points of the shape (curv absc)"))
-  , d_numEdges(initData(&d_numEdges, 10, "numEdges","number of Edges for the visual model"))
-  , d_numEdgesCollis(initData(&d_numEdgesCollis,"numEdgesCollis", "number of Edges for the collision model" ))
-  , d_poissonRatio(initData(&d_poissonRatio,(Real)0.49,"poissonRatio","Poisson Ratio"))
-  , d_youngModulus1(initData(&d_youngModulus1,(Real)5000,"youngModulus","Young Modulus"))
-  , d_youngModulus2(initData(&d_youngModulus2,(Real)3000,"youngModulusExtremity","youngModulus for beams at the extremity\nonly if not straight"))
-  , d_radius1(initData(&d_radius1,(Real)1.0f,"radius","radius"))
-  , d_radius2(initData(&d_radius2,(Real)1.0f,"radiusExtremity","radius for beams at the extremity\nonly if not straight"))
-  , d_innerRadius1(initData(&d_innerRadius1,(Real)0.0f,"innerRadius","inner radius if it applies"))
-  , d_innerRadius2(initData(&d_innerRadius2,(Real)0.0f,"innerRadiusExtremity","inner radius for beams at the extremity\nonly if not straight"))
-  , d_massDensity1(initData(&d_massDensity1,(Real)1.0,"massDensity", "Density of the mass (usually in kg/m^3)" ))
-  , d_massDensity2(initData(&d_massDensity2,(Real)1.0,"massDensityExtremity", "Density of the mass at the extremity\nonly if not straight" ))
   , d_brokenIn2(initData(&d_brokenIn2, (bool)false, "brokenIn2", ""))
   , d_drawRestShape(initData(&d_drawRestShape, (bool)false, "draw", "draw rest shape"))
+  , l_sectionMaterials(initLink("wireMaterials", "link to Wire Section Materials (to be ordered according to the instrument, from handle to tip)"))
   , l_topology(initLink("topology", "link to the topology container"))
   , l_loader(initLink("loader", "link to the MeshLoader"))
-  , l_edge2QuadMapping(initLink("edge2QuadMapping", "link to the edge2QuadMapping to render this beam"))
 {
     d_spireDiameter.setGroup("Procedural");
     d_spireHeight.setGroup("Procedural");
@@ -161,6 +150,24 @@ void WireRestShape<DataTypes>::init()
         }
     }
 
+    if (l_sectionMaterials.empty())
+    {
+        msg_error() << "No WireSectionMaterial set. At least one material should be set and link using wireMaterials.";
+        this->d_componentState.setValue(sofa::core::objectmodel::ComponentState::Invalid);
+        return;
+    }
+
+
+    ////////////////////////////////////////////////////////
+    ////////// keyPoint list and Density Assignement ///////
+    ////////////////////////////////////////////////////////
+
+    if (!initLengths())
+    {
+        this->d_componentState.setValue(sofa::core::objectmodel::ComponentState::Invalid);
+        return;
+    }
+
     //////////////////////////////////////////////
     ////////// get and fill local topology ///////
     //////////////////////////////////////////////
@@ -182,120 +189,107 @@ void WireRestShape<DataTypes>::init()
         return;
     }
 
-
     // Get pointer to the topology Modifier (for topological changes)
     _topology->getContext()->get(edgeMod);
-
     if (edgeMod == nullptr)
     {
         msg_warning() << "No EdgeSetTopologyModifier found in the same node as the topology container: " << _topology->getName() << ". This wire won't support topological changes.";
     }
 
+    initTopology();
 
-    /// fill topology :
-    _topology->clear();
-    _topology->cleanup();
-    int nbrEdges = d_numEdges.getValue();
-    if (nbrEdges <= 0)
-    {
-        msg_warning() << "Number of edges has been set to an invalid value: " << nbrEdges << ". Value should be a positive integer. Setting to default value: 10";
-        nbrEdges = 10;
-    }
-    Real dx = this->d_length.getValue() / nbrEdges;
-
-    /// add points
-    for ( int i=0; i<d_numEdges.getValue()+1; i++)
-        _topology->addPoint( i*dx, 0, 0);
-
-    /// add segments
-    for (int i=0; i<d_numEdges.getValue(); i++)
-        _topology->addEdge(i,i+1);
     
-    /// Get possible edge2Quad Mapping if one set. 
-    // TODO epernod 2022-08-05: check if the pointer to the mapping is still useful. Only used in releaseWirePart which should be now automatically handle by Topological changes mechanism.
-    edge2QuadMap = l_edge2QuadMapping.get();
-
-    const TagSet& tags = this->getTags();
-    if (!tags.empty())
-    {
-        msg_warning() << "Using tags to find edge2QuadMapping has been depreciate. Please use 'edge2QuadMapping' link to set the path to the correct topological mapping.";
-    }
-
-
-    ////////////////////////////////////////////////////////
-    ////////// keyPoint list and Density Assignement ///////
-    ////////////////////////////////////////////////////////
-    auto keyPointList = sofa::helper::getWriteOnlyAccessor(d_keyPoints);
-    if(!keyPointList.size())
-    {
-        keyPointList.push_back(0.0);
-        if(d_straightLength.getValue()>= 0.001*this->d_length.getValue() && d_straightLength.getValue() <=  0.999*d_length.getValue())
-            keyPointList.push_back(d_straightLength.getValue());
-        keyPointList.push_back(d_length.getValue());
-    }
-
-    if( d_density.getValue().size() != keyPointList.size()-1)
-    {
-        auto densityList = sofa::helper::getWriteOnlyAccessor(d_density);
-
-        if(densityList.size() > keyPointList.size()-1 )
-            densityList.resize(keyPointList.size()-1);
-        else
-        {
-            densityList.clear();
-
-            if(d_straightLength.getValue()>= 0.001*this->d_length.getValue() )
-            {
-                int numNodes = (int) floor(5.0*d_straightLength.getValue() / d_length.getValue() );
-                densityList.push_back(numNodes);
-            }
-            if( d_straightLength.getValue() <=  0.999*d_length.getValue())
-            {
-                int numNodes = (int) floor(20.0*(1.0 - d_straightLength.getValue() / d_length.getValue()) );
-                densityList.push_back(numNodes);
-            }
-        }
-    }
-
-    if(!d_numEdgesCollis.getValue().size())
-    {
-        auto densityCol = sofa::helper::getWriteOnlyAccessor(d_numEdgesCollis);
-        densityCol.resize(keyPointList.size()-1);
-        for (unsigned int i=0; i<densityCol.size(); i++)
-            densityCol[i] = 20;
-    }
-
-    msg_info() <<"WireRestShape end init" ;
-
-    // Prepare beam sections
-    double r 					= this->d_radius1.getValue();
-    double rInner 				= this->d_innerRadius1.getValue();
-    this->beamSection1._r 		= r;
-    this->beamSection1._rInner 	= rInner;
-    this->beamSection1._Iz		= M_PI*(r*r*r*r - rInner*rInner*rInner*rInner)/4.0;
-    this->beamSection1._Iy 		= this->beamSection1._Iz ;
-    this->beamSection1._J 		= this->beamSection1._Iz + this->beamSection1._Iy;
-    this->beamSection1._A 		= M_PI*(r*r - rInner*rInner);
-    this->beamSection1._Asy 	= 0.0;
-    this->beamSection1._Asz 	= 0.0;
-
-    r 							= this->d_radius2.getValue();
-    rInner 						= this->d_innerRadius2.getValue();
-    this->beamSection2._r 		= r;
-    this->beamSection2._rInner 	= rInner;
-    this->beamSection2._Iz 		= M_PI*(r*r*r*r - rInner*rInner*rInner*rInner)/4.0;
-    this->beamSection2._Iy 		= this->beamSection2._Iz ;
-    this->beamSection2._J 		= this->beamSection2._Iz + this->beamSection2._Iy;
-    this->beamSection2._A 		= M_PI*(r*r - rInner*rInner);
-    this->beamSection2._Asy 	= 0.0;
-    this->beamSection2._Asz 	= 0.0;
-
     this->d_componentState.setValue(sofa::core::objectmodel::ComponentState::Valid);
+    msg_info() << "WireRestShape end init";    
 }
 
 
 template <class DataTypes>
-void WireRestShape<DataTypes>::releaseWirePart(){
+bool WireRestShape<DataTypes>::initLengths()
+{
+    auto keyPointList = sofa::helper::getWriteOnlyAccessor(d_keyPoints);
+    auto densityList = sofa::helper::getWriteOnlyAccessor(d_density);
+
+    // In case use used length and straightLenght instead of keyPointList, create keyPointList
+    if (keyPointList.empty())
+    {
+        keyPointList.push_back(0.0);
+        if (d_straightLength.getValue() >= 0.001 * this->d_length.getValue() && d_straightLength.getValue() <= 0.999 * d_length.getValue())
+            keyPointList.push_back(d_straightLength.getValue());
+        keyPointList.push_back(d_length.getValue());
+    }
+
+    // checking sizes between keypointList and number of input material
+    if (l_sectionMaterials.size() != keyPointList.size() - 1)
+    {
+        msg_error() << "Wrong number of inputs. Component can't be init. Number of input materials: " << l_sectionMaterials.size() << ", should be equal to keyPointList.size()-1. keyPointList.size() is equal to: " << keyPointList.size();
+        return false;
+    }
+
+    if (densityList.size() != keyPointList.size() - 1)
+    {
+        msg_warning() << "Wrong number of densityOfBeams. Given: " << densityList.size() << ", should be equal to keyPointList.size()-1: '" << keyPointList.size() 
+            << "'. densityOfBeams will be recomputed using Wire material number of collision edges.";
+        densityList.clear();
+
+        for (unsigned int i = 0; i < keyPointList.size() - 1; ++i)
+        {
+            auto mat = l_sectionMaterials.get(i);
+            int nbrCollEdges = mat->getNbCollisionEdges();
+            densityList.push_back(nbrCollEdges);
+        }
+    }
+
+    return true;
+}
+
+
+template <class DataTypes>
+bool WireRestShape<DataTypes>::initTopology()
+{
+    /// fill topology :
+    _topology->clear();
+    _topology->cleanup();
+
+    const type::vector<Real>& keyPts = d_keyPoints.getValue();
+    if (l_sectionMaterials.size() != keyPts.size() - 1)
+    {
+        msg_error() << "Wrong number of inputs. Component can't be init. Number of input materials: " << l_sectionMaterials.size() << ", should be equal to keyPointList.size()-1. keyPointList.size() is equal to: " << keyPts.size();
+        return false;
+    }
+    
+    Real prev_length = 0.0;
+    int prev_edges = 0;
+    int startPtId = 0; 
+    for (auto i = 0; i < l_sectionMaterials.size(); ++i)
+    {
+        // Add topology of the material 
+        int nbrVisuEdges = l_sectionMaterials.get(i)->getNbVisualEdges();
+        Real length = fabs(keyPts[i + 1] - keyPts[i]);
+        Real dx = length / nbrVisuEdges;
+
+        // add points from the material
+        for (int i = startPtId; i < nbrVisuEdges + 1; i++) {
+            _topology->addPoint(prev_length + i * dx, 0, 0);
+        }
+
+        // add segments from the material
+        for (int i = prev_edges; i < prev_edges + nbrVisuEdges; i++) {
+            _topology->addEdge(i, i + 1);
+        }
+
+        prev_length = length;
+        prev_edges = nbrVisuEdges;
+        startPtId = 1; // Assume the last point of mat[n] == first point of mat[n+1]
+    }
+
+    return true;
+}
+
+
+template <class DataTypes>
+void WireRestShape<DataTypes>::releaseWirePart()
+{
 
     d_brokenIn2.setValue(true);
 
@@ -317,19 +311,7 @@ void WireRestShape<DataTypes>::releaseWirePart(){
             edgeMod->removeEdges(edge_remove,false); // remove the single edge and do not remove any point...
 
             msg_info() << "WireRestShape _topology name="<<_topology->getName()<<" - numEdges ="<<_topology->getNbEdges() ;
-
-            // propagate the topological change to the topological mapping //
-            if(edge2QuadMap!=nullptr)
-            {
-                edge2QuadMap->updateTopologicalMappingTopDown();
-                sofa::component::topology::container::dynamic::QuadSetTopologyModifier *quadMod;
-                edge2QuadMap->getContext()->get(quadMod);
-                quadMod->notifyEndingEvent();
-            }
-
-
-            _topology->resetTopologyChangeList();
-
+            
             return;
         }
     }
@@ -378,28 +360,34 @@ void WireRestShape<DataTypes>::getCollisionSampling(Real &dx, const Real &x_curv
     if(x_used<0.0)
         x_used=0.0;
 
-    // verify that size of numEdgesCollis  =  size of keyPoints-1
-    if( d_numEdgesCollis.getValue().size() != d_keyPoints.getValue().size()-1)
+    const type::vector<Real>& keyPts = d_keyPoints.getValue();
+    
+    // verify that size of number of materials == size of keyPoints-1
+    if (l_sectionMaterials.size() != keyPts.size() - 1)
     {
-        msg_error() << "Problem size of numEdgesCollis ()" << d_numEdgesCollis.getValue().size() << " !=  size of keyPoints-1 " << d_keyPoints.getValue().size()-1 ;
-        numLines = (unsigned int)d_numEdgesCollis.getValue()[0];
-        dx=d_length.getValue()/numLines;
+        msg_error() << "Problem size of number of materials: " << l_sectionMaterials.size()
+                    << " !=  size of keyPoints-1 " << keyPts.size()-1 
+                    << ". Returning default values.";
+        numLines = 20;
+        dx = d_length.getValue() / numLines;
         return;
     }
-
-
-    for (unsigned int i=1; i<this->d_keyPoints.getValue().size(); i++)
+    
+    // Check in which section x_used belongs to and get access to this section material
+    for (auto i = 1; i< keyPts.size(); ++i)
     {
-        if( x_used < this->d_keyPoints.getValue()[i] )
+        if (x_used <= keyPts[i])
         {
-            numLines = (unsigned int)d_numEdgesCollis.getValue()[i-1];
-            dx=(this->d_keyPoints.getValue()[i] - this->d_keyPoints.getValue()[i-1])/numLines;
+            numLines = l_sectionMaterials.get(i-1)->getNbCollisionEdges();
+            dx = d_straightLength.getValue() / numLines;
             return;
         }
     }
 
-    dx=d_length.getValue()/20;
-    msg_error() << " problem is  getCollisionSampling : x_curv "<<x_used<<" is not between keyPoints"<<d_keyPoints.getValue() ;
+    // If x_used is out of bounds. Warn user and returns default value.
+    numLines = 20;
+    dx = d_length.getValue() / numLines;
+    msg_error() << " problem is  getCollisionSampling : x_curv " << x_used << " is not between keyPoints" << d_keyPoints.getValue();
 }
 
 
@@ -467,79 +455,36 @@ void WireRestShape<DataTypes>::getRestTransformOnX(Transform &global_H_local, co
 template <class DataTypes>
 void WireRestShape<DataTypes>::getYoungModulusAtX(const Real& x_curv, Real& youngModulus, Real& cPoisson)
 {
-    //Initialization
-    Real _E1, _E2;
-    youngModulus = 0.0;
-    cPoisson = 0.0;
-
-    //Get the two possible values of the Young modulus
-    _E1 = this->d_youngModulus1.getValue();
-    _E2 = this->d_youngModulus2.getValue();
-
-    //Get User data
-    cPoisson = this->d_poissonRatio.getValue();
-
-    //Depending on the position of the beam, determine the Young modulus
-    if(x_curv <= this->d_straightLength.getValue())
+    const type::vector<Real>& keyPts = d_keyPoints.getValue();
+    // Depending on the position of the beam, determine the corresponding section material and returning its Young modulus
+    for (auto i = 1; i < keyPts.size(); ++i)
     {
-        youngModulus = _E1;
+        if (x_curv <= keyPts[i])
+        {
+            return l_sectionMaterials.get(i - 1)->getYoungModulusAtX(youngModulus, cPoisson);
+        }
     }
-    else
-    {
-        if(_E2 == 0.0)
-            youngModulus = _E1;
-        else
-            youngModulus = _E2;
-    }
-    return;
+
+    msg_error() << " problem in getYoungModulusAtX : x_curv " << x_curv << " is not between keyPoints" << keyPts;
 }
 
 
 template <class DataTypes>
 void WireRestShape<DataTypes>::getInterpolationParam(const Real& x_curv, Real &_rho, Real &_A, Real &_Iy , Real &_Iz, Real &_Asy, Real &_Asz, Real &_J)
 {
-    if(x_curv <= this->d_straightLength.getValue())
+    const type::vector<Real>& keyPts = d_keyPoints.getValue();
+    // Check in which section x_used belongs to and get access to this section material
+    for (auto i = 1; i < keyPts.size(); ++i)
     {
-        if(d_massDensity1.isSet())
-            _rho = d_massDensity1.getValue();
-
-        if(d_radius1.isSet())
+        if (x_curv <= keyPts[i])
         {
-            _A		=beamSection1._A;
-            _Iy		=beamSection1._Iy;
-            _Iz		=beamSection1._Iz;
-            _Asy	=beamSection1._Asy;
-            _Asz	=beamSection1._Asz;
-            _J		=beamSection1._J;
+            return l_sectionMaterials.get(i - 1)->getInterpolationParam(_rho, _A, _Iy, _Iz, _Asy, _Asz, _J);
         }
     }
-    else
-    {
-        if(d_massDensity2.isSet())
-            _rho = d_massDensity2.getValue();
-        else if(d_massDensity1.isSet())
-            _rho = d_massDensity1.getValue();
 
-        if(d_radius2.isSet())
-        {
-            _A		=beamSection2._A;
-            _Iy		=beamSection2._Iy;
-            _Iz		=beamSection2._Iz;
-            _Asy	=beamSection2._Asy;
-            _Asz	=beamSection2._Asz;
-            _J		=beamSection2._J;
-        }
-        else if(d_radius1.isSet())
-        {
-            _A		=beamSection1._A;
-            _Iy		=beamSection1._Iy;
-            _Iz		=beamSection1._Iz;
-            _Asy	=beamSection1._Asy;
-            _Asz	=beamSection1._Asz;
-            _J		=beamSection1._J;
-        }
-    }
+    msg_error() << " problem in getInterpolationParam : x_curv " << x_curv << " is not between keyPoints" << keyPts;
 }
+
 
 template <class DataTypes>
 bool WireRestShape<DataTypes>::checkTopology()
@@ -763,11 +708,11 @@ template <class DataTypes>
 void WireRestShape<DataTypes>::getNumberOfCollisionSegment(Real &dx, unsigned int &numLines)
 {
     numLines = 0;
-    for (unsigned i=0; i<d_numEdgesCollis.getValue().size(); i++)
+    for (auto i = 0; i < l_sectionMaterials.size(); ++i)
     {
-        numLines += (unsigned int)d_numEdgesCollis.getValue()[i];
+        numLines += l_sectionMaterials.get(i)->getNbCollisionEdges();
     }
-    dx=d_length.getValue()/numLines;
+    dx = d_length.getValue() / numLines;
 }
 
 template <class DataTypes>

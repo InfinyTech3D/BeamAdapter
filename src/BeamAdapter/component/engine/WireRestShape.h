@@ -34,6 +34,8 @@
 
 #include <BeamAdapter/config.h>
 #include <BeamAdapter/utils/BeamSection.h>
+#include <BeamAdapter/component/model/WireSectionMaterial.h>
+
 #include <sofa/defaulttype/SolidTypes.h>
 #include <sofa/core/objectmodel/BaseObject.h>
 #include <sofa/component/topology/container/dynamic/EdgeSetTopologyModifier.h>
@@ -51,11 +53,14 @@ using sofa::component::topology::container::dynamic::EdgeSetTopologyModifier;
 using sofa::component::topology::mapping::Edge2QuadTopologicalMapping;
 using sofa::core::loader::MeshLoader;
 
+using namespace sofa::beamadapter;
+
 /**
  * \class WireRestShape
  * \brief Describe the shape functions on multiple segments
- *
- *  Describe the shape functions on multiple segments using curvilinear abscissa
+ *  
+ *  Describe the full shape of a Wire with a given length and radius. The wire is discretized by a set of beams (given by the keyPoints and the relatives Beam density)
+ *  This component compute the beam discretization and the shape functions on multiple segments using curvilinear abscissa.
  */
 template <class DataTypes>
 class WireRestShape : public core::objectmodel::BaseObject
@@ -84,7 +89,7 @@ public:
      /////////////////////////// Inherited from BaseObject //////////////////////////////////////////
      void parse(core::objectmodel::BaseObjectDescription* arg) override;
      void init() override ;
-       
+
      void draw(const core::visual::VisualParams * vparams) override ;
 
 
@@ -127,6 +132,12 @@ public:
 
      void rotateFrameForAlignX(const Quat &input, Vec3 &x, Quat &output);
 
+protected:
+    /// Internal method to init Lengths vector @sa d_keyPoints if not set using @sa d_length and @sa d_straightLength. Returns false if init can't be performed.
+    bool initLengths();
+    /// Internal method to init Edge Topology @sa _topology using the list of materials @sa l_sectionMaterials. Returns false if init can't be performed.
+    bool initTopology();
+
 
 public:
      /// Analitical creation of wire shape...
@@ -138,26 +149,13 @@ public:
      Data<Real> d_spireHeight;
      Data<type::vector<int> > d_density;
      Data<type::vector<Real> > d_keyPoints;
-     Data< int > d_numEdges;
-     Data<type::vector<int> > d_numEdgesCollis;
-
-     /// User Data about the Young modulus
-     Data<Real> d_poissonRatio;
-     Data<Real> d_youngModulus1;
-     Data<Real> d_youngModulus2;
-
-     /// Radius
-     Data<Real> d_radius1;
-     Data<Real> d_radius2;
-     Data<Real> d_innerRadius1;
-     Data<Real> d_innerRadius2;
-
-     Data<Real> d_massDensity1;
-     Data<Real> d_massDensity2;
 
      /// broken in 2 case
      Data<bool> d_brokenIn2;
      Data<bool>	d_drawRestShape;
+     
+     /// Vector or links to the Wire section material. The order of the linked material will define the WireShape structure.
+     MultiLink<WireRestShape<DataTypes>, WireSectionMaterial, BaseLink::FLAG_STOREPATH | BaseLink::FLAG_STRONGLINK> l_sectionMaterials;
 
 private:
      /// Data required for the File loading
@@ -166,9 +164,6 @@ private:
      type::vector<Real> 		m_curvAbs ;
      double 							m_absOfGeometry {0};
      
-     BeamSection beamSection1;
-     BeamSection beamSection2;
-
      /// Link to be set to the topology container in the component graph.
      SingleLink<WireRestShape<DataTypes>, TopologyContainer, BaseLink::FLAG_STOREPATH | BaseLink::FLAG_STRONGLINK> l_topology;     
      /// Pointer to the topology container, should be set using @sa l_topology, otherwise will search for one in current Node.
@@ -180,12 +175,6 @@ private:
      SingleLink<WireRestShape<DataTypes>, MeshLoader, BaseLink::FLAG_STOREPATH | BaseLink::FLAG_STRONGLINK> l_loader;     
      /// Pointer to the MeshLoader, should be set using @sa l_loader, otherwise will search for one in current Node.
      MeshLoader* loader{ nullptr };
-
-     /// Link to a Edge2QuadTopologicalMapping, usually used for beam surface rendering to be set to propagate topological changes
-     SingleLink<WireRestShape<DataTypes>, Edge2QuadTopologicalMapping, BaseLink::FLAG_STOREPATH | BaseLink::FLAG_STRONGLINK> l_edge2QuadMapping;
-     /// Pointer to a Edge2QuadTopologicalMapping usually used for beam surface rendering. To be set using @sa l_edge2QuadMapping
-     Edge2QuadTopologicalMapping* edge2QuadMap{ nullptr };
-
 };
 
 
