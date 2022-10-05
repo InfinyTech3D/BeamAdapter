@@ -83,7 +83,7 @@
 		<WireBeamInterpolation name='InterpolCoils' WireRestShape='@../topoLines_coils/CoilRestShape' radius='0.1' printLog='0'/> 
 		<AdaptiveBeamForceFieldAndMass name='CoilsForceField' interpolation='@InterpolCoils' massDensity='0.000021'/> <!-- platine E = 168000 MPa // 21000 Kg/m3-->	
 
-		<InterventionalRadiologyController template='Rigid3d' name='m_ircontroller' printLog='0' xtip='1 0 0'  step='3' rotationInstrument='0 0 0' 
+		<InterventionalRadiologyController template='Rigid3d' name='m_ircontroller' printLog='1' xtip='1 0 0'  step='3' rotationInstrument='0 0 0' 
 							controlledInstrument='0' startingPos='0 0 0 0 -0.7071068 0 0.7071068' speed='2' instruments='InterpolCatheter InterpolGuide InterpolCoils' />
 
 		<LinearSolverConstraintCorrection printLog='false' wire_optimization='true'/>
