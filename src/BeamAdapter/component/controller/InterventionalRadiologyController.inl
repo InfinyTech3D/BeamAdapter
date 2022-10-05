@@ -161,7 +161,6 @@ void InterventionalRadiologyController<DataTypes>::init()
 
     Inherit::init();
 
-    reinit();
 }
 
 template<class DataTypes>
@@ -205,7 +204,6 @@ void InterventionalRadiologyController<DataTypes>::bwdInit()
     m_numControlledNodes = x.size();
 
     applyInterventionalRadiologyController();
-    reinit();
 }
 
 
@@ -1034,12 +1032,11 @@ void InterventionalRadiologyController<DataTypes>::sortCurvAbs(type::vector<Real
     // here we sort CurvAbs   
     std::sort(curvAbs.begin(), curvAbs.end());
 
-    // copy threshold in variable member for std::unique
-    m_threshold = d_threshold.getValue();
+    // a threshold is used to remove the values that are "too" close...
+    const auto threshold = d_threshold.getValue();
+    auto it = std::unique(curvAbs.begin(), curvAbs.end(), [threshold](const Real v1, const Real v2) {
+        return fabs(v1 - v2) < threshold;
 
-    // a threshod is used to remove the values that are "too" similars...
-    auto it = std::unique(curvAbs.begin(), curvAbs.end(), [this](const Real v1, const Real v2) {
-        return fabs(v1 - v2) < this->m_threshold;
     });
     curvAbs.erase(it, curvAbs.end());
 
@@ -1048,24 +1045,24 @@ void InterventionalRadiologyController<DataTypes>::sortCurvAbs(type::vector<Real
     idInstrumentTable.clear();
     idInstrumentTable.resize(curvAbs.size());
 
+    const auto& xTip = d_xTip.getValue();
     for (unsigned int id = 0; id < m_instrumentsList.size(); id++)
     {
         // Get instrument absciss range
-        Real xEnd = d_xTip.getValue()[id];
+        Real xEnd = xTip[id];
         Real xBegin = xEnd - m_instrumentsList[id]->getRestTotalLength();
 
         // enlarge range to ensure to considere borders in absisses comparisons
-        xBegin -= m_threshold;
-        xEnd += m_threshold;
+        xBegin -= threshold;
+        xEnd += threshold;
 
         // check curvAbs sorted value, if value is inside [xBegin, xBegin] of the tool add it to instrumentList. 
         for (unsigned int i = 0; i < curvAbs.size(); i++)
         {
-            auto xCurv = curvAbs[i];
-            if (xCurv < xBegin) // still not inside range
+            if (curvAbs[i] < xBegin) // still not inside range
                 continue;
 
-            if (xCurv > xEnd) // exit range
+            if (curvAbs[i] > xEnd) // exit range
                 break;
 
             idInstrumentTable[i].push_back(id);

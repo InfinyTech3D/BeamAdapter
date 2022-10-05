@@ -90,7 +90,6 @@ public:
     ////////////////////// Inherited from BaseObject ///////////////////////////////////////////////
     virtual void init() override ;
     virtual void bwdInit() override ;
-    virtual void draw(const core::visual::VisualParams*) override {}
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -112,6 +111,7 @@ public:
     int getTotalNbEdges()const;
 
     void applyAction(sofa::beamadapter::BeamAdapterAction action);
+
 
     /// Getter to the tools curviline abscisses sorted @sa m_nodeCurvAbs at the current timestep.
     [[nodiscard]] const type::vector<Real>& getCurrentCurvAbscisses() const { return m_nodeCurvAbs; }
