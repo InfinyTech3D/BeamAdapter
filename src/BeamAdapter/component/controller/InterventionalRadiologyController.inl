@@ -239,6 +239,9 @@ void InterventionalRadiologyController<DataTypes>::onMouseEvent(MouseEvent * mev
 template <class DataTypes>
 void InterventionalRadiologyController<DataTypes>::onKeyPressedEvent(KeypressedEvent *kev)
 {
+
+    return;
+
     /// Control keys for interventonal Radiology simulations:
     switch(kev->getKey())
     {
@@ -299,56 +302,58 @@ template <class DataTypes>
 void InterventionalRadiologyController<DataTypes>::onBeginAnimationStep(const double dt)
 {
     SOFA_UNUSED(dt);
+    
+    cptFwd = 0;
 
-    BaseContext* context = getContext();
-    auto xInstrTip = sofa::helper::getWriteOnlyAccessor(d_xTip);
-    if(m_FF || m_RW)
-    {
-        int id = d_controlledInstrument.getValue();
-        if (id >= (int)xInstrTip.size())
-        {
-            msg_warning()<<"Controlled Instument num "<<id<<" does not exist (size ="<< xInstrTip.size() <<") use instrument 0 instead";
-            id=0;
-        }
-        if (m_FF)
-        {
-            if (!m_sensored)
-                xInstrTip[id] += d_speed.getValue() * context->getDt();
-        else
-            {
-                unsigned int newSensorData = m_currentSensorData + 1;
+    //BaseContext* context = getContext();
+    //auto xInstrTip = sofa::helper::getWriteOnlyAccessor(d_xTip);
+    //if(m_FF || m_RW)
+    //{
+    //    int id = d_controlledInstrument.getValue();
+    //    if (id >= (int)xInstrTip.size())
+    //    {
+    //        msg_warning()<<"Controlled Instument num "<<id<<" does not exist (size ="<< xInstrTip.size() <<") use instrument 0 instead";
+    //        id=0;
+    //    }
+    //    if (m_FF)
+    //    {
+    //        if (!m_sensored)
+    //            xInstrTip[id] += d_speed.getValue() * context->getDt();
+    //    else
+    //        {
+    //            unsigned int newSensorData = m_currentSensorData + 1;
 
-                while( m_sensorMotionData[newSensorData][0] < context->getTime() )
-                {
-                    m_currentSensorData = newSensorData;
-                    newSensorData++;
-                }
-                if(newSensorData >= m_sensorMotionData.size())
-                {
-                    xInstrTip[id] = 0;
-                }
-                else
-                {
-                    xInstrTip[id] += m_sensorMotionData[m_currentSensorData][1];
-                }
-            }
-        }
-        if (m_RW)
-        {
-            xInstrTip[id] -= d_speed.getValue()* context->getDt();
-            // verif min x :
-            if ( xInstrTip[id] < 0.0)
-            {
-                xInstrTip[id] = 0.0;
-                m_RW = false;
-            }
-        }
-    }
+    //            while( m_sensorMotionData[newSensorData][0] < context->getTime() )
+    //            {
+    //                m_currentSensorData = newSensorData;
+    //                newSensorData++;
+    //            }
+    //            if(newSensorData >= m_sensorMotionData.size())
+    //            {
+    //                xInstrTip[id] = 0;
+    //            }
+    //            else
+    //            {
+    //                xInstrTip[id] += m_sensorMotionData[m_currentSensorData][1];
+    //            }
+    //        }
+    //    }
+    //    if (m_RW)
+    //    {
+    //        xInstrTip[id] -= d_speed.getValue()* context->getDt();
+    //        // verif min x :
+    //        if ( xInstrTip[id] < 0.0)
+    //        {
+    //            xInstrTip[id] = 0.0;
+    //            m_RW = false;
+    //        }
+    //    }
+    //}
 
-    /// The tip of the instrument can not be further than its total length
-    for (unsigned int i=0; i<m_instrumentsList.size(); i++)
-        if (xInstrTip[i] > m_instrumentsList[i]->getRestTotalLength() )
-            xInstrTip[i] = m_instrumentsList[i]->getRestTotalLength();
+    ///// The tip of the instrument can not be further than its total length
+    //for (unsigned int i=0; i<m_instrumentsList.size(); i++)
+    //    if (xInstrTip[i] > m_instrumentsList[i]->getRestTotalLength() )
+    //        xInstrTip[i] = m_instrumentsList[i]->getRestTotalLength();
 
     applyInterventionalRadiologyController();
 }
