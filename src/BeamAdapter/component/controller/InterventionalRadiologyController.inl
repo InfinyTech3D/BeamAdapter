@@ -303,9 +303,7 @@ void InterventionalRadiologyController<DataTypes>::onBeginAnimationStep(const do
 {
     SOFA_UNUSED(dt);
     
-    cptFwd = 0;
-
-    //BaseContext* context = getContext();
+        //BaseContext* context = getContext();
     //auto xInstrTip = sofa::helper::getWriteOnlyAccessor(d_xTip);
     //if(m_FF || m_RW)
     //{
