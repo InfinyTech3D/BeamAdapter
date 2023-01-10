@@ -187,7 +187,6 @@ void WireRestShape<DataTypes>::init()
         this->d_componentState.setValue(sofa::core::objectmodel::ComponentState::Invalid);
         return;
     }
-
     else
     {
         if (!fillTopology())
@@ -197,6 +196,7 @@ void WireRestShape<DataTypes>::init()
             return;
         }
     }
+
     // Get pointer to the topology Modifier (for topological changes)
     _topology->getContext()->get(edgeMod);
     if (edgeMod == nullptr)
@@ -207,7 +207,7 @@ void WireRestShape<DataTypes>::init()
     initTopology();
     
     this->d_componentState.setValue(sofa::core::objectmodel::ComponentState::Valid);
-    msg_info() << "WireRestShape end init";    
+    msg_info() << "WireRestShape end init";
 }
 
 template <class DataTypes>
@@ -538,39 +538,41 @@ bool WireRestShape<DataTypes>::checkTopology()
 template <class DataTypes>
 bool WireRestShape<DataTypes>::fillTopology()
 {
-    if (!_topology)
-    {
-        msg_error() << "Topology is null";
-        return false;
-    }
+    msg_warning() << "fillTopology has been disabled for the moment until Material branch has been fully merged.";
 
-    const auto length = this->d_length.getValue();
-    if (length <= Real(0.0))
-    {
-        msg_error() << "Length is 0 (or negative), check if d_length has been given or computed.";
-        return false;
-    }
+    //if (!_topology)
+    //{
+    //    msg_error() << "Topology is null";
+    //    return false;
+    //}
 
-    int nbrEdges = d_numEdges.getValue();
-    if (nbrEdges <= 0)
-    {
-        msg_warning() << "Number of edges has been set to an invalid value: " << nbrEdges << ". Value should be a positive integer. Setting to default value: 10";
-        nbrEdges = 10;
-    }
+    //const auto length = this->d_length.getValue();
+    //if (length <= Real(0.0))
+    //{
+    //    msg_error() << "Length is 0 (or negative), check if d_length has been given or computed.";
+    //    return false;
+    //}
 
-    /// fill topology :
-    _topology->clear();
-    _topology->cleanup();
+    //int nbrEdges = d_numEdges.getValue();
+    //if (nbrEdges <= 0)
+    //{
+    //    msg_warning() << "Number of edges has been set to an invalid value: " << nbrEdges << ". Value should be a positive integer. Setting to default value: 10";
+    //    nbrEdges = 10;
+    //}
 
-    Real dx = this->d_length.getValue() / nbrEdges;
+    ///// fill topology :
+    //_topology->clear();
+    //_topology->cleanup();
 
-    /// add points
-    for (int i = 0; i < d_numEdges.getValue() + 1; i++)
-        _topology->addPoint(i * dx, 0, 0);
+    //Real dx = this->d_length.getValue() / nbrEdges;
 
-    /// add segments
-    for (int i = 0; i < d_numEdges.getValue(); i++)
-        _topology->addEdge(i, i + 1);
+    ///// add points
+    //for (int i = 0; i < d_numEdges.getValue() + 1; i++)
+    //    _topology->addPoint(i * dx, 0, 0);
+
+    ///// add segments
+    //for (int i = 0; i < d_numEdges.getValue(); i++)
+    //    _topology->addEdge(i, i + 1);
 
     return true;
 }
