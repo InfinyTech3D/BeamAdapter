@@ -86,6 +86,12 @@ public:
     /// Returns the mass density and the BeamSection of this section
     void getInterpolationParam(Real& _rho, Real& _A, Real& _Iy, Real& _Iz, Real& _Asy, Real& _Asz, Real& _J) const;
 
+    /// Returns the Young modulus, Poisson's and massDensity coefficient of this section
+    void getMechanicalParamAtX(Real& youngModulus, Real& cPoisson, Real& massDensity) const;
+
+    /// Returns the BeamSection @sa m_beamSection corresponding to this RodSection
+    [[nodiscard]] const BeamSection& getBeamSectionAtX() const  { return m_beamSection; }
+
     /// This function is called to get the rest position of the beam depending on the current curved abscisse given in parameter 
     virtual void getRestTransformOnX(Transform& global_H_local, const Real& x_used, const Real& x_start)
     {
@@ -112,7 +118,7 @@ public:
 
 private:
     /// Internal structure to store physical parameter of the a beam section
-    BeamSection beamSection;
+    BeamSection m_beamSection;
 };
 
 #if !defined(SOFA_PLUGIN_BEAMADAPTER_BASERODSECTIONMATERIAL_CPP)
