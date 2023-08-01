@@ -135,6 +135,14 @@ public:
         this->m_restShape->getYoungModulusAtX(x_curv, youngModulus, cPoisson);
     }
 
+
+    void getMechanicalParam(int beamId, Real& youngModulus, Real& cPoisson, Real& massDensity)override    
+    {
+        Real x_curv = 0;
+        this->getAbsCurvXFromBeam(beamId, x_curv);
+        this->m_restShape->getMechanicalParamAtX(x_curv, youngModulus, cPoisson, massDensity);
+    }
+
     virtual void getRestTransform(unsigned int edgeInList, Transform &local0_H_local1_rest);
     void getSplineRestTransform(unsigned int edgeInList, Transform &local_H_local0_rest, Transform &local_H_local1_rest) override;
 

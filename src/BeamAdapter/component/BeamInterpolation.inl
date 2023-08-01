@@ -553,6 +553,15 @@ void BeamInterpolation<DataTypes>::getYoungModulusAtX(int beamId, Real& /*x_curv
 }
 
 
+template<class DataTypes>
+void BeamInterpolation<DataTypes>::getMechanicalParam(int beamId, Real& youngModulus, Real& cPoisson, Real& massDensity)
+{
+    Real xcurv;
+    return getYoungModulusAtX(beamId, xcurv, youngModulus, cPoisson);
+}
+
+
+
 template <class DataTypes>
 void BeamInterpolation<DataTypes>::setTransformBetweenDofAndNode(int beam, const Transform &DOF_H_Node, unsigned int zeroORone )
 {
@@ -776,6 +785,7 @@ void BeamInterpolation<DataTypes>::getInterpolationParam(unsigned int edgeInList
     _Asz=bS._Asz;
     _J=bS._J;
 }
+
 
 
 template<class DataTypes>

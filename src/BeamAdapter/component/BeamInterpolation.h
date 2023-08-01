@@ -262,6 +262,8 @@ public:
     virtual void getCollisionSampling(Real &dx, const Real& x_localcurv_abs) ;
     virtual void getNumberOfCollisionSegment(Real &dx, unsigned int &numLines) ;
     virtual void getYoungModulusAtX(int beamId,Real& x_curv, Real& youngModulus, Real& cPoisson) ;
+    virtual void getMechanicalParam(int beamId, Real& youngModulus, Real& cPoisson, Real& massDensity);
+
     void setTransformBetweenDofAndNode(int beam, const Transform &DOF_H_Node, unsigned int zeroORone ) ;
     virtual void getSplineRestTransform(unsigned int edgeInList, Transform &local_H_local0_rest, Transform &local_H_local1_rest);
 
