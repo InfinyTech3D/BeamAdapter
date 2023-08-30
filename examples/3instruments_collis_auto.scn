@@ -1,176 +1,175 @@
 <?xml version='1.0'?>
 <Node name='root' dt='0.05'  gravity='0 0 0'> 
-	<Node name='Plugins'>
-	    <RequiredPlugin name="BeamAdapter"/> <!-- Needed to use components [MultiAdaptiveBeamMapping WireBeamInterpolation WireRestShape] -->
-	    <RequiredPlugin name="Sofa.Component.AnimationLoop"/> <!-- Needed to use components [FreeMotionAnimationLoop] -->
-	    <RequiredPlugin name="Sofa.Component.Collision.Detection.Algorithm"/> <!-- Needed to use components [BVHNarrowPhase BruteForceBroadPhase CollisionPipeline] -->
-	    <RequiredPlugin name="Sofa.Component.Collision.Detection.Intersection"/> <!-- Needed to use components [LocalMinDistance] -->
-	    <RequiredPlugin name="Sofa.Component.Collision.Geometry"/> <!-- Needed to use components [LineCollisionModel PointCollisionModel TriangleCollisionModel] -->
-	    <RequiredPlugin name="Sofa.Component.Collision.Response.Contact"/> <!-- Needed to use components [CollisionResponse] -->
-	    <RequiredPlugin name="Sofa.Component.Constraint.Lagrangian.Correction"/> <!-- Needed to use components [LinearSolverConstraintCorrection] -->
-	    <RequiredPlugin name="Sofa.Component.Constraint.Lagrangian.Solver"/> <!-- Needed to use components [LCPConstraintSolver] -->
-	    <RequiredPlugin name="Sofa.Component.Constraint.Projective"/> <!-- Needed to use components [FixedConstraint] -->
-	    <RequiredPlugin name="Sofa.Component.IO.Mesh"/> <!-- Needed to use components [MeshOBJLoader] -->
-	    <RequiredPlugin name="Sofa.Component.LinearSolver.Direct"/> <!-- Needed to use components [BTDLinearSolver] -->
-	    <RequiredPlugin name="Sofa.Component.Mapping.Linear"/> <!-- Needed to use components [IdentityMapping] -->
-	    <RequiredPlugin name="Sofa.Component.ODESolver.Backward"/> <!-- Needed to use components [EulerImplicitSolver] -->
-	    <RequiredPlugin name="Sofa.Component.SolidMechanics.Spring"/> <!-- Needed to use components [RestShapeSpringsForceField] -->
-	    <RequiredPlugin name="Sofa.Component.StateContainer"/> <!-- Needed to use components [MechanicalObject] -->
-	    <RequiredPlugin name="Sofa.Component.Topology.Container.Constant"/> <!-- Needed to use components [MeshTopology] -->
-	    <RequiredPlugin name="Sofa.Component.Topology.Container.Dynamic"/> <!-- Needed to use components [EdgeSetGeometryAlgorithms EdgeSetTopologyContainer EdgeSetTopologyModifier QuadSetGeometryAlgorithms QuadSetTopologyContainer QuadSetTopologyModifier] -->
-	    <RequiredPlugin name="Sofa.Component.Topology.Container.Grid"/> <!-- Needed to use components [RegularGridTopology] -->
-	    <RequiredPlugin name="Sofa.Component.Topology.Mapping"/> <!-- Needed to use components [Edge2QuadTopologicalMapping] -->
-	    <RequiredPlugin name="Sofa.Component.Visual"/> <!-- Needed to use components [VisualStyle] -->
-	    <RequiredPlugin name="Sofa.GL.Component.Rendering3D"/> <!-- Needed to use components [OglModel] -->
-	</Node>
+    <Node name='Plugins'>
+        <RequiredPlugin name="BeamAdapter"/> <!-- Needed to use components [MultiAdaptiveBeamMapping WireBeamInterpolation WireRestShape] -->
+        <RequiredPlugin name="Sofa.Component.AnimationLoop"/> <!-- Needed to use components [FreeMotionAnimationLoop] -->
+        <RequiredPlugin name="Sofa.Component.Collision.Detection.Algorithm"/> <!-- Needed to use components [BVHNarrowPhase BruteForceBroadPhase CollisionPipeline] -->
+        <RequiredPlugin name="Sofa.Component.Collision.Detection.Intersection"/> <!-- Needed to use components [LocalMinDistance] -->
+        <RequiredPlugin name="Sofa.Component.Collision.Geometry"/> <!-- Needed to use components [LineCollisionModel PointCollisionModel TriangleCollisionModel] -->
+        <RequiredPlugin name="Sofa.Component.Collision.Response.Contact"/> <!-- Needed to use components [CollisionResponse] -->
+        <RequiredPlugin name="Sofa.Component.Constraint.Lagrangian.Correction"/> <!-- Needed to use components [LinearSolverConstraintCorrection] -->
+        <RequiredPlugin name="Sofa.Component.Constraint.Lagrangian.Solver"/> <!-- Needed to use components [LCPConstraintSolver] -->
+        <RequiredPlugin name="Sofa.Component.Constraint.Projective"/> <!-- Needed to use components [FixedConstraint] -->
+        <RequiredPlugin name="Sofa.Component.IO.Mesh"/> <!-- Needed to use components [MeshOBJLoader] -->
+        <RequiredPlugin name="Sofa.Component.LinearSolver.Direct"/> <!-- Needed to use components [BTDLinearSolver] -->
+        <RequiredPlugin name="Sofa.Component.Mapping.Linear"/> <!-- Needed to use components [IdentityMapping] -->
+        <RequiredPlugin name="Sofa.Component.ODESolver.Backward"/> <!-- Needed to use components [EulerImplicitSolver] -->
+        <RequiredPlugin name="Sofa.Component.SolidMechanics.Spring"/> <!-- Needed to use components [RestShapeSpringsForceField] -->
+        <RequiredPlugin name="Sofa.Component.StateContainer"/> <!-- Needed to use components [MechanicalObject] -->
+        <RequiredPlugin name="Sofa.Component.Topology.Container.Constant"/> <!-- Needed to use components [MeshTopology] -->
+        <RequiredPlugin name="Sofa.Component.Topology.Container.Dynamic"/> <!-- Needed to use components [EdgeSetGeometryAlgorithms EdgeSetTopologyContainer EdgeSetTopologyModifier QuadSetGeometryAlgorithms QuadSetTopologyContainer QuadSetTopologyModifier] -->
+        <RequiredPlugin name="Sofa.Component.Topology.Container.Grid"/> <!-- Needed to use components [RegularGridTopology] -->
+        <RequiredPlugin name="Sofa.Component.Topology.Mapping"/> <!-- Needed to use components [Edge2QuadTopologicalMapping] -->
+        <RequiredPlugin name="Sofa.Component.Visual"/> <!-- Needed to use components [VisualStyle] -->
+        <RequiredPlugin name="Sofa.GL.Component.Rendering3D"/> <!-- Needed to use components [OglModel] -->
+    </Node>
     <VisualStyle displayFlags='showVisualModels showBehaviorModels showCollisionModels hideMappings hideForceFields' />
- 	<DefaultVisualManagerLoop/>
+    <DefaultVisualManagerLoop/>
 
- 	<FreeMotionAnimationLoop />
-	<LCPConstraintSolver mu='0.1' tolerance='1e-10' maxIt='1000' build_lcp='false' />
-	
-	<CollisionPipeline depth='6' verbose='1' draw='0'/>
-	<BruteForceBroadPhase/>
-	<BVHNarrowPhase/>
-	<LocalMinDistance name='localmindistance' alarmDistance='2' contactDistance='1' angleCone='0.8' coneFactor='0.8' />
-	<CollisionResponse name='Response' response='FrictionContactConstraint' />
+    <FreeMotionAnimationLoop />
+    <LCPConstraintSolver mu='0.1' tolerance='1e-10' maxIt='1000' build_lcp='false' />
 
-<!-- ------------------------- INTERVENTIONAL RADIOLOGY INSTRUMENTS (catheter, guidewire, coil)  ------------------------------ -->
+    <CollisionPipeline depth='6' verbose='1' draw='0'/>
+    <BruteForceBroadPhase/>
+    <BVHNarrowPhase/>
+    <LocalMinDistance name='localmindistance' alarmDistance='2' contactDistance='1' angleCone='0.8' coneFactor='0.8' />
+    <CollisionResponse name='Response' response='FrictionContactConstraint' />
 
-	<Node name='topoLines_cath'>
+    <!-- ------------------------- INTERVENTIONAL RADIOLOGY INSTRUMENTS (catheter, guidewire, coil)  ------------------------------ -->
+
+    <Node name='topoLines_cath'>
         <!--stiff silicone E = 10000 MPa // 1550 Kg/m3-->
         <RodStraightSection name="StraightSection" youngModulus="1000" massDensity='0.000155' nbEdgesCollis="40" nbEdgesVisu="120" length="600.0"/>
         <RodSpireSection name="SpireSection" youngModulus="1000" massDensity='0.000155' nbEdgesCollis="20" nbEdgesVisu="80" length="400.0" spireDiameter="4000.0" spireHeight="0.0"/>        
-        
-        <WireRestShape template="Rigid3d" name="catheterRestShape" wireMaterials="@StraightSection @SpireSection"/> <!-- silicone -->		
-    
-		<EdgeSetTopologyContainer name='meshLinesCath' />
-		<EdgeSetTopologyModifier   name='Modifier' />
-		<EdgeSetGeometryAlgorithms name='GeomAlgo'   template='Rigid3d' />
-		<MechanicalObject template='Rigid3d' name='dofTopo1' />
-	</Node>
-	<Node name='topoLines_guide'>
+
+        <WireRestShape template="Rigid3d" name="catheterRestShape" wireMaterials="@StraightSection @SpireSection"/> <!-- silicone -->  
+
+        <EdgeSetTopologyContainer name='meshLinesCath' />
+        <EdgeSetTopologyModifier   name='Modifier' />
+        <EdgeSetGeometryAlgorithms name='GeomAlgo'   template='Rigid3d' />
+        <MechanicalObject template='Rigid3d' name='dofTopo1' />
+    </Node>
+    <Node name='topoLines_guide'>
         <!--stiff silicone E = 10000 MPa // 1550 Kg/m3-->
         <RodStraightSection name="StraightSection" youngModulus="10000" massDensity='0.00000155' nbEdgesCollis="50" nbEdgesVisu="196" length="980.0"/>
         <RodSpireSection name="SpireSection" youngModulus="10000" massDensity='0.00000155' nbEdgesCollis="10" nbEdgesVisu="4" length="20.0" spireDiameter="25" spireHeight="0.0"/>        
-		
+
         <WireRestShape template="Rigid3d" name="GuideRestShape" wireMaterials="@StraightSection @SpireSection"/>
-    
-		<EdgeSetTopologyContainer name='meshLinesGuide' />
-		<EdgeSetTopologyModifier   name='Modifier' />
-		<EdgeSetGeometryAlgorithms name='GeomAlgo'   template='Rigid3d' />
-		<MechanicalObject template='Rigid3d' name='dofTopo2' />
-	</Node>
-	<Node name='topoLines_coils'>
+
+        <EdgeSetTopologyContainer name='meshLinesGuide' />
+        <EdgeSetTopologyModifier   name='Modifier' />
+        <EdgeSetGeometryAlgorithms name='GeomAlgo'   template='Rigid3d' />
+        <MechanicalObject template='Rigid3d' name='dofTopo2' />
+    </Node>
+        <Node name='topoLines_coils'>
         <!-- platine E = 168000 MPa // 21000 Kg/m3-->
         <RodStraightSection name="StraightSection" youngModulus="168000" massDensity='0.000021' nbEdgesCollis="30" nbEdgesVisu="360" length="540.0"/>
         <RodSpireSection name="SpireSection" youngModulus="168000" massDensity='0.000021' nbEdgesCollis="30" nbEdgesVisu="40" length="60.0" spireDiameter="7" spireHeight="5.0"/>        
-		
+
         <WireRestShape template="Rigid3d" name="CoilRestShape" wireMaterials="@StraightSection @SpireSection"/>
-        
-		<EdgeSetTopologyContainer name='meshLinesCoils' />
-		<EdgeSetTopologyModifier   name='Modifier' />
-		<EdgeSetGeometryAlgorithms name='GeomAlgo'   template='Rigid3d' />
-		<MechanicalObject template='Rigid3d' name='dofTopo3' />
-	</Node>
-	
 
-	<Node name='InstrumentCombined'>
-		<EulerImplicitSolver rayleighStiffness='0.2' rayleighMass='0.1' printLog='false' />
-		<BTDLinearSolver subpartSolve='0' verification='0' verbose='0'/>
-		<RegularGridTopology name='meshLinesCombined'
-		nx='200' ny='1' nz='1'
-		xmin='0.0' xmax='1.0'
-		ymin='0' ymax='0'
-		zmin='1' zmax='1'
-		/>
-		<MechanicalObject template='Rigid3d' name='DOFs' showIndices='0' ry='-90'/> 
+        <EdgeSetTopologyContainer name='meshLinesCoils' />
+        <EdgeSetTopologyModifier   name='Modifier' />
+        <EdgeSetGeometryAlgorithms name='GeomAlgo'   template='Rigid3d' />
+        <MechanicalObject template='Rigid3d' name='dofTopo3' />
+    </Node>
 
-		<WireBeamInterpolation name='InterpolCatheter' WireRestShape='@../topoLines_cath/catheterRestShape' radius='1' printLog='0'/> 
-		<AdaptiveBeamForceFieldAndMass name='CatheterForceField' interpolation='@InterpolCatheter' /> 
 
-		<WireBeamInterpolation name='InterpolGuide' WireRestShape='@../topoLines_guide/GuideRestShape' radius='0.9' printLog='0'/> 
-		<AdaptiveBeamForceFieldAndMass name='GuideForceField' interpolation='@InterpolGuide' /> 	
+    <Node name='InstrumentCombined'>
+        <EulerImplicitSolver rayleighStiffness='0.2' rayleighMass='0.1' printLog='false' />
+        <BTDLinearSolver subpartSolve='0' verification='0' verbose='0'/>
+        <RegularGridTopology name='meshLinesCombined'
+        nx='200' ny='1' nz='1'
+        xmin='0.0' xmax='1.0'
+        ymin='0' ymax='0'
+        zmin='1' zmax='1'
+        />
+        <MechanicalObject template='Rigid3d' name='DOFs' showIndices='0' ry='-90'/> 
 
-		<WireBeamInterpolation name='InterpolCoils' WireRestShape='@../topoLines_coils/CoilRestShape' radius='0.1' printLog='0'/> 
-		<AdaptiveBeamForceFieldAndMass name='CoilsForceField' interpolation='@InterpolCoils' /> 
+        <WireBeamInterpolation name='InterpolCatheter' WireRestShape='@../topoLines_cath/catheterRestShape' radius='1' printLog='0'/> 
+        <AdaptiveBeamForceFieldAndMass name='CatheterForceField' interpolation='@InterpolCatheter' /> 
 
-		<InterventionalRadiologyController template='Rigid3d' name='m_ircontroller' printLog='1' xtip='1 0 0'  step='1' rotationInstrument='0 0 0' 
-						speed="0.01" controlledInstrument='0' startingPos='0 0 0 0 -0.7071068 0 0.7071068' instruments='InterpolCatheter InterpolGuide InterpolCoils' />
-                            
-        <BeamAdapterActionController name="AController" interventionController="@m_ircontroller" writeMode="1"
+        <WireBeamInterpolation name='InterpolGuide' WireRestShape='@../topoLines_guide/GuideRestShape' radius='0.9' printLog='0'/> 
+        <AdaptiveBeamForceFieldAndMass name='GuideForceField' interpolation='@InterpolGuide' />  
+
+        <WireBeamInterpolation name='InterpolCoils' WireRestShape='@../topoLines_coils/CoilRestShape' radius='0.1' printLog='0'/> 
+        <AdaptiveBeamForceFieldAndMass name='CoilsForceField' interpolation='@InterpolCoils' /> 
+
+        <InterventionalRadiologyController template='Rigid3d' name='m_ircontroller' printLog='1' xtip='1 0 0'  step='1' rotationInstrument='0 0 0' 
+        speed="0.01" controlledInstrument='0' startingPos='0 0 0 0 -0.7071068 0 0.7071068' instruments='InterpolCatheter InterpolGuide InterpolCoils' />
+                
+        <BeamAdapterActionController name="AController" interventionController="@m_ircontroller" writeMode="0"
+        timeSteps='0.45 3.6 3.75 3.95 4.15 4.35 4.5 4.7 4.9 5.2 5.4 5.6 5.8 6 6.15 6.35 6.55 6.75 6.95 7.1 7.3 7.5 7.8 7.95 8.15 8.35 8.55 8.75 8.95 9.15 9.3 9.5 9.7 9.9 10.1 10.3 10.6 10.8 11 11.2 11.35 11.55 11.75 11.95 12.15 12.35 12.55 12.75 12.95 13.15 13.45 13.65 13.85 14 14.2 14.4 14.6 14.8 15 15.2 15.35 15.55 15.75 15.95 16.15 16.4 16.6 16.8 17 17.15 17.35 17.55 17.75 17.95 18.15 18.3 18.5 18.7 18.9 19.05 19.25 19.55 19.7 19.9 20.1 20.25 20.45 20.65 20.85 21 21.2 21.4 21.55 21.75 21.95 22.2 22.4 22.6 22.75 22.95 23.1 23.3 23.5 23.65 23.85 24.05 24.25 24.45 24.6 24.8 25 25.25 25.45 25.6 25.8 25.95 26.15 26.3 26.45 26.65 26.8 26.95 27.1 27.25 27.4 27.55 27.75 28 28.15 28.3 28.45 28.65 28.8 28.95 29.1 29.25 29.4 29.55 29.7 29.9 30.05 30.25 30.35 30.5 30.65 30.8 31 31.15 31.3 31.45 31.6 31.85 32 32.15 32.3 32.45 32.6 32.75 32.9 33.05 33.2 33.35 33.5 33.65 33.8 34.05 34.2 34.35 34.5 34.65 34.8 35 35.15 35.3 35.45 35.55 35.75 35.9 36.05 36.2 36.35 36.55 36.7 36.85 37.05 37.2 37.35 37.5 37.65 37.8 38 38.1 38.25 38.4 38.55 38.7 38.95 39.1 39.2 39.35 39.5 39.65 39.85 40 40.15 40.3 40.45 40.6 40.75 40.9 41.1 41.25 41.4 41.55 41.7 41.85 42 42.1 42.25 42.4 42.55 42.7 42.85 43 43.2 43.35 43.5 43.6 43.75 43.9 44.05 44.2 44.3 44.45 44.6 44.75 44.95 45.1 45.25 45.4 45.5 45.65 45.8 45.95 46.05 46.2 46.3 46.45 46.6 46.8 46.95 47.1 47.2 47.3 47.45 47.55 47.65 47.8 47.95 48.1 48.25 48.4 48.6 48.75 48.9 49.05 49.2 49.35 49.5 49.65 49.8 49.95 50.1 50.25 51.55 53.85 54 54.15 54.3 54.45 54.6 54.75 54.85 55 55.15 55.3 55.45 58.45 60.6 60.75 60.9 61.05 61.2 61.3 61.45 61.6 61.75 61.9 62.05 62.2 62.35 62.5 62.6 62.75 62.95 63.1 63.25 63.4 63.55 64.4 66.65 66.8 66.95 67.1 67.25 67.4 67.55 67.7 67.85 68 68.15 72.45 73.7 75.35 75.45 75.6 75.7 75.85 75.95 76.1 76.2 76.3 76.45 76.6 76.75 76.85 76.95 77.05 77.15 77.3 77.4 77.5 77.6 77.8 77.85 78 78.1 78.2 78.3 78.4 78.5 78.65 78.8 78.9 79 79.1 79.2 79.35 79.45 79.55 79.65 79.8 79.9 80.05 80.15 80.25 80.4 80.5 80.65 80.75 80.85 80.95 81.05 81.15 81.25 81.35 81.45 81.6 81.7 81.8 81.9 82 82.1 82.2 82.3 82.45 82.55 82.65 82.8 82.9 83.05 83.15 83.2 83.3 83.4 83.5 83.6 83.7 83.8 83.9 84 84.1 84.3 84.4 84.5 84.6 84.7 84.8 84.9 85 85.1 85.2 85.35 85.5 85.6 85.7 85.8 85.9 86 86.1 86.25 86.4 86.55 86.65 86.75 86.9 87 87.1 87.25 87.35 87.45 87.65 87.75 87.9 88 88.1 88.25 88.35 88.45 88.55 88.65 88.75 88.85 89 89.15 89.3 89.4 89.55 89.65 89.8 89.9 90.05 90.15 90.25 90.4 90.5 90.6 90.75 90.85 91 91.15 91.25 91.35 91.5 91.6 91.7 91.8 91.9 92 92.1 92.2 92.3 92.4 92.45 92.6 92.7 92.8 92.9 93 93.1 93.2 93.3 93.4 93.5 93.6 93.65 93.75 93.85 93.95 94 94.1 94.2 94.25 94.3 94.4 94.45 94.55 94.65 94.7 94.8 94.85 94.95 95.05 95.1 95.2 95.3 95.4 95.5 95.6 95.7 95.8 95.9 96 96.1 96.2 96.3 96.4 96.45 96.5 96.6 96.7 96.8 96.9 97 97.1 97.15 97.2 97.3 97.45 97.5 97.55 97.65 97.75 97.85 97.95 98.05 98.15 98.3 98.4 98.5 98.55 98.65 98.75 98.85 98.95 99.05 99.2 99.25 99.35 99.45 99.6 99.7 99.8 99.9 99.95 100 100.05 100.15 100.25 100.3 100.4 100.45 100.6 100.7 100.8 100.9 101 101.1 101.2 101.25 101.3 101.4 101.5 101.6 101.7 101.85 101.95 102.05 102.15 102.25 102.35 102.45 102.55 102.65 102.75 103.2 104.2 104.7 105.6 105.7 105.8 106.45 107.5 107.6 107.7 107.8 107.85 107.95 108.05 108.15 108.25 109.9 111.25 111.6 112 112.25 113.25 113.7 114.65 114.7 114.8 114.9 115 115.1 115.2 115.3 115.4 115.55 115.65 115.75 115.9 116 116.15 116.25 116.3 116.4 116.5 116.6 116.7 116.85 116.95 117.05 117.2 117.35 117.45 117.55 117.65 117.8 117.9 118 118.15 118.25 118.35 118.45 118.55 118.65 118.75 118.8 118.95 119.05 119.15 119.25 119.35 119.5 119.6 119.7 119.8 119.9 120.1 120.2 120.3 120.4 120.5 120.6 120.7 120.75 120.85 120.95 121.05 121.15 121.25 121.35 121.55 121.65 121.75 121.85 121.95 122.05 122.15 122.3 122.4 122.5 122.6 122.7 122.75 122.85 123 123.1 123.2 123.3 123.4 123.5 123.6 123.75 123.85 123.95 124.05 124.15 124.25 124.35 124.5 124.6 124.7 124.8 124.85 124.9 125 125.05 125.15 125.25 125.35 125.5 125.65 125.75 125.85 125.95 126.1 126.2 126.3 126.4 126.5 126.6 126.7 126.8 126.95 127 127.1 127.2 127.3 127.4 127.5 127.6 127.7 127.8 127.9 128 128.1 128.2 128.3 128.4 128.5 128.6 128.7 128.8 128.9 129 129.1 129.2 129.3 129.4 129.5 129.65 129.75 129.85 129.95 130.05 130.15 130.25 130.4 130.5 130.6 130.7 130.8 130.9 131 131.05 131.15 131.25 131.35 131.4 131.5 131.6 131.8 131.9 132 132.1 132.2 132.3 132.4 132.5 132.6 132.7 132.8 132.9 133 133.1 133.25 133.35 133.45 133.55 133.65 133.75 133.85 133.95 134.05 134.2 134.3 134.4 134.5 134.6 134.7 134.8 134.9 135 135.1 135.15 135.3 135.4 135.5 135.55 135.65 135.75 135.85 135.95 136.05 136.15 136.2 136.3 136.4 136.55 136.65 136.75 136.85 136.9 137 137.1 137.2 137.25 137.35 137.45 137.55 137.65 137.75 137.85 137.95 138.05 138.1 138.2 138.3 138.4 138.5 138.6 138.7 138.8 138.9 139 139.1 139.15 139.25 139.35 139.45 139.5 139.6 139.7 139.8 139.85 140 140.1 140.15 140.25 140.35 140.45 140.55 140.6 140.7 140.8 140.9 141 141.1 141.2 141.25 141.4 141.5 141.6 141.65 141.75 141.85 141.95 142.05 142.1 142.2 142.3 142.35 142.5 142.55 142.7 142.8 142.9 143 143.1 143.2 143.3 143.4 143.5 145.35 145.65 146.3 146.35 146.45 146.5 146.6 146.65 146.75 146.85 146.95 147.05 147.1 147.2 147.35 147.45 147.55 147.65 147.75 147.8 147.9 148.05 148.15 148.25 148.35 148.45 148.55 148.65 148.7 148.8 148.9 149 149.1 149.2 149.3 149.4 149.5 149.6 149.7 149.75 149.85 149.95 150.05 150.15 150.25 150.3 150.4 150.5 150.6 150.7 150.8 150.9 151 151.1 151.15 151.25 151.3 151.4 151.5 151.55 151.7 151.75 151.85 151.95 152.05 152.1 152.2 152.3 152.4 152.45 152.55 152.65 152.75 152.85 152.95 153 153.1 153.15 153.2 153.3 153.35 153.4 153.5 153.6 153.7 153.8 153.9 154 154.1 154.15 154.25 154.35 154.45 154.55 154.6 154.7 154.8 154.85 154.95 155 155.1 155.15 155.25 155.3 155.4 155.45 155.55 155.65 155.7 155.75 155.85 155.9 156 156.05 156.2 156.3 156.4 156.5 156.6 156.65 156.75 156.8 156.9 157 157.05 157.15 157.25 157.35 157.45 157.55 157.6 157.7 157.75 157.85 157.95 158.05 158.15 158.2 158.3 158.4 158.45 158.5 158.6 158.65 158.75 158.85 158.95 159 159.1 159.15 159.25 159.3 159.4 159.45 159.5 159.65 159.7 159.8 159.9 159.95 160.05 160.1 160.2 160.25 160.35 160.4 160.5 160.55 160.65 160.75 160.85 160.95 161 161.05 161.15 161.2 161.3 161.35 161.45 161.55 161.6 161.65 161.75 161.85 161.9 162 162.05 162.15 162.2 162.3 162.4 162.45 162.5 162.55 162.6 162.7 162.75 162.85 162.95 163 163.1 163.2 163.25 163.35 163.45 163.55 163.65 163.7 163.8 163.9 164 164.05 164.15 164.2 164.3 164.35 164.45 164.5 164.55 164.65 164.7 164.8 164.95 165 165.1 165.2 165.3 165.35 165.45 165.55 165.6 165.65 165.75 165.85 166 166.1 166.2 166.25 166.3 166.4 166.5 166.55 166.6 166.7 166.8 166.85 166.95 167.05 167.15 167.25 167.3 167.4 167.5 167.55 167.65 167.7 167.8 167.9 167.95 168.05 168.15 168.25 168.3 168.4 168.45 168.55 168.6 168.7 168.75 168.85 168.9 169.05 169.15 169.2 169.3 170.9 173.5 174 174.6 175.2 175.5 175.8 176.05 178.8 179.25 179.8 179.9 179.95 180.05 180.15 180.25 180.35 180.45 180.55 180.6 180.65 180.75 180.8 180.9 181 181.1 181.15 181.25 181.3 181.4 181.5 181.55 181.65 181.75 181.8 181.9 182 182.05 182.1 182.2 182.25 182.3 182.4 182.45 182.5 182.6 182.65 182.7 182.8 182.85 182.95 183 183.1 183.15 183.2 183.3 183.35 183.45 183.55 183.6 183.7 183.8 183.9 183.95 184.05 184.15 184.25 184.3 184.35 184.4 184.45 184.5 184.55 184.6 184.7 184.8 184.9 184.95 185 185.1 185.15 185.25 185.3 185.35 185.45 185.55 185.6 185.7 185.75 185.85 185.95 186.05 186.15 186.25 186.35 186.45 186.55 186.6 186.65 186.7 186.75 186.8 186.9 187 187.1 187.15 187.25 187.35 187.45 187.5 187.55 187.6 187.65 187.7 187.75 187.8 187.85 187.9 188 188.1 188.15 188.2 188.3 188.4 188.5 188.6 188.7 188.8 188.85 188.9 188.95 189 189.05 189.1 189.15 189.2 189.25 189.3 189.4 189.5 189.6 189.7 189.8 189.9 190 190.1 190.2 190.25 190.35 190.45 190.55 190.6 190.65 190.7 190.8 190.9 191 191.05 191.15 191.2 191.25 191.3 191.35 191.45 191.55 191.65 191.7 191.75 191.85 191.95 192.05 192.15 192.25 192.35 192.45 192.55 192.65 192.7 192.8 192.9 193 193.1 193.2 193.3 193.4 193.5 193.6 193.7 193.8 193.9 194 194.1 194.2 194.3 194.4 194.5 194.55 194.65 194.75 194.8 194.9 194.95 195.05 195.15 195.2 195.25 195.35 195.45 195.55 195.65 195.7 195.75 195.85 195.95 196.05 196.1 196.2 196.25 196.3 196.35 196.45 196.55 196.6 196.7 196.75 196.8 196.9 196.95 197 197.05 197.1 197.15 197.2 197.3 197.4 197.45 197.55 197.65 197.7 197.75 197.85 197.95 198 198.05 198.15 198.2 198.3 198.4 198.5 198.6 198.65 198.75 198.85 198.95 199 199.1 199.15 199.2 199.3 199.4 199.5 199.55 199.65 199.75 199.85 199.9 199.95 200.05 200.15 200.25 200.35 200.45 200.5 200.6 200.7 200.75 200.85 200.95 201.05 201.1 201.2 201.3 201.35 201.4 201.5 201.55 201.65 201.75 201.85 201.9 201.95 202.05 202.15 202.2 202.25 202.35 202.4 202.5 202.6 202.65 202.7 202.8 202.9 202.95 203.05 203.15 203.2 203.3 203.4 203.5 203.6 203.7 203.8 203.85 203.9 204 204.05 204.15 204.25 204.3 204.35 204.45 204.55 204.6 204.65 204.75 204.85 204.95 205.05 205.15 205.25 205.35 205.45 205.5 205.6 205.65 205.7 205.8 205.9 205.95 206 206.1 206.2 206.25 206.35 206.4 206.45 206.55 206.65 206.75 206.85 206.95 207.05 207.15 207.25 207.35 207.4 207.5 207.55 207.65 207.75 207.8 207.85 207.95 208.05 208.15 208.2 208.3 208.35 208.45 208.55 208.65 208.75 208.85 208.9 209 209.1 209.15 209.2 209.3 209.4 209.45 209.55 209.65 209.7 209.8 209.9 209.95 210 210.05 210.15 210.25 210.35 210.45 210.5 210.6 210.7 210.75 210.8 210.9 211 211.05 211.1 211.2 211.3 211.4 211.45 211.55 211.65 211.7 211.75 211.85 211.95 212 212.05 212.15 212.2 212.3 212.4 212.45 212.5 212.6 212.7 212.75 212.85 212.9 212.95 213.05 213.15 213.2 213.3 213.4 213.5 213.55 213.6 213.7 213.8 213.9 213.95 214 214.1 214.2 214.3 214.35 214.45 214.5 214.6 214.7 214.75 214.8 214.85 214.95 215.05 215.1 215.15 215.25 215.35 215.45 215.55 215.65 215.7 215.75 215.85 215.95 216 216.05 216.15 216.2 216.3 216.4 216.5 216.55 216.6 216.7 216.8 216.85 216.9 216.95 217.05 217.1 217.2 217.3 217.35 217.45 217.55 217.6 217.65 217.75 217.8 217.9 218 218.05 218.1 218.2 218.3 218.35 218.4 218.45 218.55 218.65 218.7 218.8 218.9 219 219.1 219.2 219.25 219.35 219.4 219.5 219.6 219.7 219.8 219.9 220 220.1 220.15 220.25 220.35 220.4 220.5 220.6 220.7 220.8 220.9 220.95 221 221.05 221.15 221.2 221.25 221.3 221.35 221.4 221.45 221.5 221.55 221.6 221.65 221.7 221.75 221.8 221.85 221.9 221.95 222 222.05 222.1 222.15 222.2 222.25 222.3 222.35 222.4 222.45 222.5 222.55 222.6 222.65 222.7 222.8 222.9 223 223.1 223.15 223.2 223.25 223.3 223.4 223.45 223.5 223.55 223.6 223.65 223.7 223.8 223.85 223.95 224.05 224.1 224.2 224.3 224.4 224.45 224.5 224.6 224.7 224.8 224.85 224.95 225 225.05 225.1 225.15 225.2 225.3 225.4 225.45 225.5 225.55 225.65 225.75 225.85 225.95 226 226.05 226.15 226.25 226.35 226.45 226.55 226.65 226.7 226.75 226.8 226.85 226.95 227.05 227.15 227.2 227.25 227.3 227.35 227.45 227.55 227.65 227.75 227.8 227.9 228 228.05 228.1 228.2 228.3 228.35 228.45 228.55 228.65 228.75 228.8 228.9 229 229.1 229.2 229.3 229.4 229.5 229.6 229.7 229.8 229.85 229.9 229.95 230 230.1 230.2 230.3 230.35 230.4 230.45 230.5 230.55 230.6 230.65 230.7 230.75 230.8 230.85 230.9 230.95 231 231.05 231.1 231.15 231.2 231.25 231.3 231.35 231.4 231.5 231.6 231.7 231.8 231.85 231.9 231.95 232 232.05 232.1 232.15 232.2 232.25 232.3 232.35 232.4 232.45 232.5 232.55 232.6 232.65 232.7 232.75 232.8 232.85 232.9 232.95 233 233.05 233.1 233.15 233.2 233.25 233.3 233.35 233.4 233.45 233.5 233.55 233.6 233.65 233.7 233.75 233.8 233.85 233.9 233.95 234 234.05 234.1 234.15 234.2 234.25 234.3 234.4 234.5 234.6 234.7 234.8 234.85 234.9 234.95 235 235.05 235.1 235.15 235.25 235.3 235.35 235.4 235.45 235.5 235.55 235.65 235.75 235.85 235.95 236.05 236.15 236.2 236.25 236.35 236.45 236.55 236.65 236.7 236.75 236.85 236.95 237.05 237.1 237.15'
+        actions='1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 9 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 4 4 4 4 4 4 4 4 4 4 1 1 1 1 1 8 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 9 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 10 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1'
         />
 
-		<LinearSolverConstraintCorrection printLog='false' wire_optimization='true'/>
+        <LinearSolverConstraintCorrection printLog='false' wire_optimization='true'/>
 
-		<FixedConstraint name='FixedConstraint' indices='0' />
+        <FixedConstraint name='FixedConstraint' indices='0' />
         <RestShapeSpringsForceField  points='@m_ircontroller.indexFirstNode' stiffness='1e8' angularStiffness='1e8'   />
 
-		<Node name='Collis' activated='true'>
-				<EdgeSetTopologyContainer name='collisEdgeSet' />
-				<EdgeSetTopologyModifier   name='colliseEdgeModifier' />
-                <EdgeSetGeometryAlgorithms name='GeomAlgo'  />
-				<MechanicalObject name='CollisionDOFs'/>
-				<MultiAdaptiveBeamMapping  name='collisMap'  controller='../m_ircontroller' useCurvAbs='1' printLog='0'/> 
-				<LineCollisionModel proximity='0.0' group='1'/>
-				<PointCollisionModel proximity='0.0' group='1'/>
-		</Node>	
+        <Node name='Collis' activated='true'>
+            <EdgeSetTopologyContainer name='collisEdgeSet' />
+            <EdgeSetTopologyModifier   name='colliseEdgeModifier' />
+            <EdgeSetGeometryAlgorithms name='GeomAlgo'  />
+            <MechanicalObject name='CollisionDOFs'/>
+            <MultiAdaptiveBeamMapping  name='collisMap'  controller='../m_ircontroller' useCurvAbs='1' printLog='0'/> 
+            <LineCollisionModel proximity='0.0' group='1'/>
+            <PointCollisionModel proximity='0.0' group='1'/>
+        </Node> 
 
-		<Node name='VisuCatheter' activated='true'>
-			<MechanicalObject name='Quads' />
-			<QuadSetTopologyContainer  name='ContainerCath' />
-			<QuadSetTopologyModifier   name='Modifier' />
-			<QuadSetGeometryAlgorithms name='GeomAlgo'  template='Vec3d' />
-			<Edge2QuadTopologicalMapping nbPointsOnEachCircle='10' radius='2' input='@../../topoLines_cath/meshLinesCath' output='@ContainerCath' flipNormals='true'/>
+        <Node name='VisuCatheter' activated='true'>
+            <MechanicalObject name='Quads' />
+            <QuadSetTopologyContainer  name='ContainerCath' />
+            <QuadSetTopologyModifier   name='Modifier' />
+            <QuadSetGeometryAlgorithms name='GeomAlgo'  template='Vec3d' />
+            <Edge2QuadTopologicalMapping nbPointsOnEachCircle='10' radius='2' input='@../../topoLines_cath/meshLinesCath' output='@ContainerCath' flipNormals='true'/>
 
-			<AdaptiveBeamMapping  name='VisuMapCath' useCurvAbs='1' printLog='0' interpolation='@../InterpolCatheter' input='@../DOFs' output='@Quads' isMechanical='false'  />
+            <AdaptiveBeamMapping  name='VisuMapCath' useCurvAbs='1' printLog='0' interpolation='@../InterpolCatheter' input='@../DOFs' output='@Quads' isMechanical='false'  />
 
-			<Node name='VisuOgl' activated='true'>
-				<OglModel name='Visual' color='0.7 0.7 0.7'  quads='@../ContainerCath.quads' material='texture Ambient 1 0.2 0.2 0.2 0.0 Diffuse 1 1.0 1.0 1.0 1.0 Specular 1 1.0 1.0 1.0 1.0 Emissive 0 0.15 0.05 0.05 0.0 Shininess 1 20'/>
-				<IdentityMapping input='@../Quads' output='@Visual'/>
-			</Node>	
-		</Node>
-	
-		<Node name='VisuGuide' activated='true'>
-			<MechanicalObject name='Quads' />
-			<QuadSetTopologyContainer  name='ContainerGuide' />
-			<QuadSetTopologyModifier   name='Modifier' />
-			<QuadSetGeometryAlgorithms name='GeomAlgo'  template='Vec3d' />
-			<Edge2QuadTopologicalMapping nbPointsOnEachCircle='10' radius='1' input='@../../topoLines_guide/meshLinesGuide' output='@ContainerGuide'  flipNormals='true' listening='true'/> 
-			<AdaptiveBeamMapping  name='visuMapGuide' useCurvAbs='1' printLog='0' interpolation='@../InterpolGuide' input='@../DOFs' output='@Quads' isMechanical='false' />
-			<Node name='VisuOgl'>
-				<OglModel name='Visual' color='0.2 0.2 0.8'  material='texture Ambient 1 0.2 0.2 0.2 0.0 Diffuse 1 1.0 1.0 1.0 1.0 Specular 1 1.0 1.0 1.0 1.0 Emissive 0 0.15 0.05 0.05 0.0 Shininess 1 20' quads='@../ContainerGuide.quads'/>
-				<IdentityMapping input='@../Quads' output='@Visual'/>
-			</Node>		
-		</Node> 
-	   
-		<Node name='VisuCoils' activated='true'>
-			<MechanicalObject name='Quads'/>
-			<QuadSetTopologyContainer  name='ContainerCoils' />
-			<QuadSetTopologyModifier   name='Modifier' />
-			<QuadSetGeometryAlgorithms name='GeomAlgo'  template='Vec3d' />
-			<Edge2QuadTopologicalMapping nbPointsOnEachCircle='10' radius='0.3'  input='@../../topoLines_coils/meshLinesCoils' output='@ContainerCoils'  flipNormals='true' listening='true' /> 
-			<AdaptiveBeamMapping  name='visuMapCoils' useCurvAbs='1' printLog='0' interpolation='@../InterpolCoils' input='@../DOFs' output='@Quads' isMechanical='false' />
-			<Node name='VisuOgl'>
-				<OglModel name='Visual' color='0.2 0.8 0.2'  material='texture Ambient 1 0.2 0.2 0.2 0.0 Diffuse 1 1.0 1.0 1.0 1.0 Specular 1 1.0 1.0 1.0 1.0 Emissive 0 0.15 0.05 0.05 0.0 Shininess 1 20' quads='@../ContainerCoils.quads'/>
-				<IdentityMapping input='@../Quads' output='@Visual'/>
-			</Node>		
-		</Node>   
-	</Node>
+            <Node name='VisuOgl' activated='true'>
+                <OglModel name='Visual' color='0.7 0.7 0.7'  quads='@../ContainerCath.quads' material='texture Ambient 1 0.2 0.2 0.2 0.0 Diffuse 1 1.0 1.0 1.0 1.0 Specular 1 1.0 1.0 1.0 1.0 Emissive 0 0.15 0.05 0.05 0.0 Shininess 1 20'/>
+                <IdentityMapping input='@../Quads' output='@Visual'/>
+            </Node> 
+        </Node>
 
-	
+        <Node name='VisuGuide' activated='true'>
+            <MechanicalObject name='Quads' />
+            <QuadSetTopologyContainer  name='ContainerGuide' />
+            <QuadSetTopologyModifier   name='Modifier' />
+            <QuadSetGeometryAlgorithms name='GeomAlgo'  template='Vec3d' />
+            <Edge2QuadTopologicalMapping nbPointsOnEachCircle='10' radius='1' input='@../../topoLines_guide/meshLinesGuide' output='@ContainerGuide'  flipNormals='true' listening='true'/> 
+            <AdaptiveBeamMapping  name='visuMapGuide' useCurvAbs='1' printLog='0' interpolation='@../InterpolGuide' input='@../DOFs' output='@Quads' isMechanical='false' />
+            <Node name='VisuOgl'>
+                <OglModel name='Visual' color='0.2 0.2 0.8'  material='texture Ambient 1 0.2 0.2 0.2 0.0 Diffuse 1 1.0 1.0 1.0 1.0 Specular 1 1.0 1.0 1.0 1.0 Emissive 0 0.15 0.05 0.05 0.0 Shininess 1 20' quads='@../ContainerGuide.quads'/>
+                <IdentityMapping input='@../Quads' output='@Visual'/>
+            </Node>  
+        </Node> 
 
-	<Node name='CollisionModel'> 
-		<MeshOBJLoader name='meshLoader' filename='mesh/phantom.obj' triangulate='true' flipNormals='1'/>
-		<MeshTopology position='@meshLoader.position'  triangles='@meshLoader.triangles'/>
-		<MechanicalObject name='DOFs1' position='0 0 400' scale='3' ry='90'/>	
-		<TriangleCollisionModel simulated='0' moving='0'/>	
-		<LineCollisionModel simulated='0' moving='0'/>
-		<PointCollisionModel simulated='0' moving='0'/>
-		<OglModel name='Visual' src='@meshLoader' color='1 0 0 0.3' scale='3' ry='90'/>
-	</Node>
-	
-	
-	
+        <Node name='VisuCoils' activated='true'>
+            <MechanicalObject name='Quads'/>
+            <QuadSetTopologyContainer  name='ContainerCoils' />
+            <QuadSetTopologyModifier   name='Modifier' />
+            <QuadSetGeometryAlgorithms name='GeomAlgo'  template='Vec3d' />
+            <Edge2QuadTopologicalMapping nbPointsOnEachCircle='10' radius='0.3'  input='@../../topoLines_coils/meshLinesCoils' output='@ContainerCoils'  flipNormals='true' listening='true' /> 
+            <AdaptiveBeamMapping  name='visuMapCoils' useCurvAbs='1' printLog='0' interpolation='@../InterpolCoils' input='@../DOFs' output='@Quads' isMechanical='false' />
+            <Node name='VisuOgl'>
+                <OglModel name='Visual' color='0.2 0.8 0.2'  material='texture Ambient 1 0.2 0.2 0.2 0.0 Diffuse 1 1.0 1.0 1.0 1.0 Specular 1 1.0 1.0 1.0 1.0 Emissive 0 0.15 0.05 0.05 0.0 Shininess 1 20' quads='@../ContainerCoils.quads'/>
+                <IdentityMapping input='@../Quads' output='@Visual'/>
+            </Node>
+        </Node>
+    </Node>
+
+
+
+    <Node name='CollisionModel'> 
+        <MeshOBJLoader name='meshLoader' filename='mesh/phantom.obj' triangulate='true' flipNormals='1'/>
+        <MeshTopology position='@meshLoader.position'  triangles='@meshLoader.triangles'/>
+        <MechanicalObject name='DOFs1' position='0 0 400' scale='3' ry='90'/> 
+        <TriangleCollisionModel simulated='0' moving='0'/> 
+        <LineCollisionModel simulated='0' moving='0'/>
+        <PointCollisionModel simulated='0' moving='0'/>
+        <OglModel name='Visual' src='@meshLoader' color='1 0 0 0.3' scale='3' ry='90'/>
+    </Node>
+
 </Node>
-
