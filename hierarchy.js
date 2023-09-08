@@ -27,12 +27,6 @@ var hierarchy =
       [ "ImplicitSurfaceAdaptiveConstraintResolution< DataTypes >", "classsofa_1_1component_1_1constraint_1_1__implicitsurfaceadaptiveconstraint___1_1_implicit_surfa1356ca7fd440062f64bc429b52b78571.html", null ]
     ] ],
     [ "ContactMapper", "class_contact_mapper.html", null ],
-    [ "GenericConstraintProblem", null, [
-      [ "UnbuiltGenericConstraintProblem", "classsofa_1_1component_1_1constraintset_1_1_unbuilt_generic_constraint_problem.html", null ]
-    ] ],
-    [ "GenericConstraintSolver", null, [
-      [ "UnbuiltGenericConstraintSolver", "classsofa_1_1component_1_1constraintset_1_1_unbuilt_generic_constraint_solver.html", null ]
-    ] ],
     [ "IntervalDefinition< Real >", "classsofa_1_1component_1_1constraintset_1_1__adaptivebeamlengthconstraint___1_1_interval_definition.html", null ],
     [ "Mapping", null, [
       [ "MultiAdaptiveBeamMapping< TIn, TOut >", "classsofa_1_1component_1_1mapping_1_1_multi_adaptive_beam_mapping.html", null ]
@@ -50,7 +44,7 @@ var hierarchy =
       [ "ImplicitSurfaceAdaptiveConstraint< DataTypes >", "classsofa_1_1component_1_1constraint_1_1__implicitsurfaceadaptiveconstraint___1_1_implicit_surface_adaptive_constraint.html", null ]
     ] ],
     [ "AdaptiveBeamMapping< TIn, TOut >::PosPointDefinition", "structsofa_1_1component_1_1mapping_1_1__adaptivebeammapping___1_1_adaptive_beam_mapping_1_1_pos_point_definition.html", null ],
-    [ "ProjectionSearch< DataTypes >", "classsofa_1_1component_1_1fem_1_1__wirebeaminterpolation___1_1_projection_search.html", null ],
+    [ "ProjectionSearch< DataTypes >", "classsofa_1_1component_1_1constraintset_1_1__adaptive_beam_sliding_constraint___1_1_projection_search.html", null ],
     [ "BaseObject", null, [
       [ "DeprecatedComponent", "classsofa_1_1component_1_1_deprecated_component.html", [
         [ "AdaptiveBeamConstraint", "class_adaptive_beam_constraint.html", null ]

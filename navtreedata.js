@@ -31,7 +31,6 @@ var NAVTREE =
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
         [ "All", "namespacemembers.html", null ],
-        [ "Functions", "namespacemembers_func.html", null ],
         [ "Variables", "namespacemembers_vars.html", null ]
       ] ]
     ] ],
@@ -54,10 +53,10 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "",
-"classsofa_1_1component_1_1constraintset_1_1__adaptivebeamlengthconstraint___1_1_adaptive_beam_length_constraint.html#ae2bf7bec3beb53b1f58f6ed936c6c2a1",
-"classsofa_1_1component_1_1fem_1_1__beaminterpolation___1_1_beam_interpolation.html#a078d4cffe3962f03a28673ff327645cd",
-"classsofa_1_1component_1_1forcefield_1_1__adaptivebeamforcefieldandmass___1_1_adaptive_beam_forcab7fe5ba476da6d212613576bd99dc87.html#acb1eb5dcea202f5698034b75e86aaff3",
-"dir_6245286b41514b9fa65243e9fda741ce.html"
+"classsofa_1_1component_1_1constraintset_1_1__adaptivebeamlengthconstraint___1_1_adaptive_beam_length_constraint.html#a05882e2e9ba8d707ab531ab94a1f39e0",
+"classsofa_1_1component_1_1engine_1_1_steerable_catheter.html#a705fac58c33b23c20e6bac3fd2b0bb87",
+"classsofa_1_1component_1_1forcefield_1_1__adaptivebeamforcefieldandmass___1_1_adaptive_beam_force_field_and_mass.html#a357d9f9e52aad598a1a2ea4def76b95e",
+"init_beam_adapter_8cpp.html#a44ed889b5f8bb76b6bd8ac4f4b50f34c"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
