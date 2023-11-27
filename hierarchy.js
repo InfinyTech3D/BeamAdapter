@@ -11,6 +11,11 @@ var hierarchy =
       [ "MultiAdaptiveBeamContactMapper< TCollisionModel, DataTypes >", "classsofa_1_1component_1_1collision_1_1_multi_adaptive_beam_contact_mapper.html", null ]
     ] ],
     [ "BaseObject", null, [
+      [ "BaseRodSectionMaterial< DataTypes >", "classsofa_1_1beamadapter_1_1_base_rod_section_material.html", [
+        [ "RodMeshSection< DataTypes >", "classsofa_1_1beamadapter_1_1_rod_mesh_section.html", null ],
+        [ "RodSpireSection< DataTypes >", "classsofa_1_1beamadapter_1_1_rod_spire_section.html", null ],
+        [ "RodStraightSection< DataTypes >", "classsofa_1_1beamadapter_1_1_rod_straight_section.html", null ]
+      ] ],
       [ "WireRestShape< DataTypes >", "classsofa_1_1component_1_1engine_1_1__wirerestshape___1_1_wire_rest_shape.html", [
         [ "SteerableCatheter< DataTypes >", "classsofa_1_1component_1_1engine_1_1_steerable_catheter.html", null ]
       ] ]
@@ -39,6 +44,9 @@ var hierarchy =
       [ "AdaptiveBeamController< DataTypes >", "classsofa_1_1component_1_1controller_1_1__adaptivebeamcontroller___1_1_adaptive_beam_controller.html", null ],
       [ "InterventionalRadiologyController< DataTypes >", "classsofa_1_1component_1_1controller_1_1__interventionalradiologycontroller___1_1_interventional_radiology_controller.html", null ],
       [ "SutureController< DataTypes >", "classsofa_1_1component_1_1controller_1_1__suturecontroller___1_1_suture_controller.html", null ]
+    ] ],
+    [ "Multi2Mapping", null, [
+      [ "BeamProjectionDifferenceMultiMapping< TIn1, TIn2, TOut >", "classbeamadapter_1_1mapping_1_1_beam_projection_difference_multi_mapping.html", null ]
     ] ],
     [ "PairInteractionConstraint", null, [
       [ "ImplicitSurfaceAdaptiveConstraint< DataTypes >", "classsofa_1_1component_1_1constraint_1_1__implicitsurfaceadaptiveconstraint___1_1_implicit_surface_adaptive_constraint.html", null ]

@@ -38,7 +38,7 @@ var NAVTREE =
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [
-        [ "All", "functions.html", null ],
+        [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", null ],
         [ "Variables", "functions_vars.html", null ],
         [ "Typedefs", "functions_type.html", null ]
@@ -52,11 +52,11 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"",
-"classsofa_1_1component_1_1constraintset_1_1__adaptivebeamlengthconstraint___1_1_adaptive_beam_length_constraint.html#a05882e2e9ba8d707ab531ab94a1f39e0",
-"classsofa_1_1component_1_1engine_1_1_steerable_catheter.html#a705fac58c33b23c20e6bac3fd2b0bb87",
-"classsofa_1_1component_1_1forcefield_1_1__adaptivebeamforcefieldandmass___1_1_adaptive_beam_force_field_and_mass.html#a3e98b141d7aa180d1c1fa8a78c9849c8",
-"init_beam_adapter_8cpp.html#a925f86586ba8483514c39b8195865172"
+"_adaptive_beam_contact_mapper_8cpp.html#a3d2088e3645f6e64b21c3b1cab13b761",
+"classsofa_1_1component_1_1constraint_1_1__implicitsurfaceadaptiveconstraint___1_1_implicit_surface_adaptive_constraint.html#a0e0568b69d177a2930f8b90c61e39566",
+"classsofa_1_1component_1_1controller_1_1__interventionalradiologycontroller___1_1_interventional_radiology_controller.html#a89a5e669ec02e829dcf746c372f6552b",
+"classsofa_1_1component_1_1fem_1_1__wirebeaminterpolation___1_1_wire_beam_interpolation.html#a26c84542c1e907732bf85fa505d676c1",
+"classsofa_1_1component_1_1mapping_1_1__beamlengthmapping___1_1_beam_length_mapping.html#a27de6dee885e67d9a22a2d8d7448f8e6"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
