@@ -22,6 +22,6 @@
         <FixedConstraint name="FixedConstraint" indices="0 99" />
         <BeamInterpolation name="BeamInterpolation" radius="0.1" /> 
         <AdaptiveBeamForceFieldAndMass name="BeamForceField"  computeMass="1" massDensity="10"/>
-    </Node>  
+    </Node>
     
 </Node>

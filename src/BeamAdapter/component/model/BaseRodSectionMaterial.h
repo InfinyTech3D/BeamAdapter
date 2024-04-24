@@ -99,9 +99,9 @@ protected:
     virtual bool initSection() { return false; }
 
 public:
-    Data<Real> d_poissonRatio; ///< Data defining the mehcanical Poisson ratio of this section
-    Data<Real> d_youngModulus; ///< Data defining the mehcanical Young Modulus of this section
-    Data<Real> d_massDensity; ///< Data defining the mehcanical mass density of this section
+    Data<Real> d_poissonRatio; ///< Data defining the mechanical Poisson ratio of this section
+    Data<Real> d_youngModulus; ///< Data defining the mechanical Young Modulus of this section
+    Data<Real> d_massDensity; ///< Data defining the mechanical mass density of this section
     
     Data<Real> d_radius; ///< Data defining the geometry radius of this section
     Data<Real> d_innerRadius; ///< Data defining the geometry internal radius of this section is hollow 

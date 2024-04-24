@@ -154,6 +154,7 @@ template <class DataTypes>
 template <class DataTypes>
 void BeamInterpolation<DataTypes>::computeCrossSectionInertiaMatrix()
 {
+    std::cout << "BeamInterpolation<DataTypes>::computeCrossSectionInertiaMatrix" << std::endl;
     if ( crossSectionShape.getValue().getSelectedItem() == "elliptic")
     {
         /* code */
@@ -352,6 +353,7 @@ void BeamInterpolation<DataTypes>::reinit()
 template<class DataTypes>
 void BeamInterpolation<DataTypes>::storeResetState()
 {
+    std::cout << "BeamInterpolation<DataTypes>::storeResetState" << std::endl;
     if(d_componentState.getValue()==ComponentState::Invalid)
         return ;
 
@@ -370,6 +372,7 @@ void BeamInterpolation<DataTypes>::reset()
 template<class DataTypes>
 bool BeamInterpolation<DataTypes>::interpolationIsAlreadyInitialized()
 {
+    std::cout << "BeamInterpolation<DataTypes>::interpolationIsAlreadyInitialized" << std::endl;
     if (d_edgeList.getValue().size() == 0)
         return false;
 
@@ -432,6 +435,7 @@ void BeamInterpolation<DataTypes>::clear()
 template<class DataTypes>
 void BeamInterpolation<DataTypes>::addBeam(const BaseMeshTopology::EdgeID &eID  , const Real &length, const Real &x0, const Real &x1, const Real &angle)
 {
+    std::cout << "BeamInterpolation<DataTypes>::addBeam" << std::endl;
     auto edgeList = sofa::helper::getWriteOnlyAccessor(d_edgeList);
     auto lengthList = sofa::helper::getWriteOnlyAccessor(d_lengthList);
     auto DOF0TransformNode0 = sofa::helper::getWriteOnlyAccessor(d_DOF0TransformNode0);
@@ -457,6 +461,7 @@ void BeamInterpolation<DataTypes>::addBeam(const BaseMeshTopology::EdgeID &eID  
 template<class DataTypes>
 void BeamInterpolation<DataTypes>::getBeamAtCurvAbs(const Real& x_input, unsigned int &edgeInList_output, Real& baryCoord_output, unsigned int start)
 {
+    std::cout << "BeamInterpolation<DataTypes>::getBeamAtCurvAbs" << std::endl;
     /// lTotalRest = total length of the
     Real lTotalRest = getRestTotalLength();
     /// LTotal =  length sum of the beams that are "out"
@@ -509,6 +514,7 @@ void BeamInterpolation<DataTypes>::getSamplingParameters(type::vector<Real>& /*x
 template <class DataTypes>
 typename BeamInterpolation<DataTypes>::Real BeamInterpolation<DataTypes>::getRestTotalLength()
 {
+    std::cout << "BeamInterpolation<DataTypes>::getRestTotalLength" << std::endl;
     Real le(0.0);
     const type::vector< double > &lengthList = d_lengthList.getValue();
 
@@ -521,6 +527,7 @@ typename BeamInterpolation<DataTypes>::Real BeamInterpolation<DataTypes>::getRes
 template <class DataTypes>
 void BeamInterpolation<DataTypes>::getCollisionSampling(Real &dx, const Real& /*x_localcurv_abs*/)
 {
+    std::cout << "BeamInterpolation<DataTypes>::getCollisionSampling" << std::endl;
     unsigned int numLines = 30;
     dx = getRestTotalLength()/numLines;
 }
@@ -528,6 +535,7 @@ void BeamInterpolation<DataTypes>::getCollisionSampling(Real &dx, const Real& /*
 template <class DataTypes>
 void BeamInterpolation<DataTypes>::getNumberOfCollisionSegment(Real &dx, unsigned int &numLines)
 {
+    std::cout << "BeamInterpolation<DataTypes>::getNumberOfCollisionSegment" << std::endl;
     numLines = 30;
     dx = getRestTotalLength()/numLines;
 }
@@ -535,6 +543,7 @@ void BeamInterpolation<DataTypes>::getNumberOfCollisionSegment(Real &dx, unsigne
 template <class DataTypes>
 void BeamInterpolation<DataTypes>::getYoungModulusAtX(int beamId, Real& /*x_curv*/, Real& youngModulus, Real& cPoisson)
 {
+    std::cout << "BeamInterpolation<DataTypes>::getYoungModulusAtX" << std::endl;
     const auto& defaultYoungModuli = d_defaultYoungModulus.getValue();
     if (beamId < int(defaultYoungModuli.size())) {
 
@@ -647,7 +656,7 @@ int BeamInterpolation<DataTypes>::computeTransform(const ElementID edgeInList,
 template<class DataTypes>
 int BeamInterpolation<DataTypes>::computeTransform(const ElementID edgeInList, const PointID node0Idx, const PointID node1Idx, Transform& global_H_local0, Transform& global_H_local1, const VecCoord& x)
 {
-
+    std::cout << "BeamInterpolation<DataTypes>::computeTransform" << std::endl;
     /// 2. Computes the optional rigid transformation of DOF0_Transform_node0 and DOF1_Transform_node1
     Transform DOF0_H_local0, DOF1_H_local1;
     getDOFtoLocalTransform(edgeInList, DOF0_H_local0, DOF1_H_local1);
@@ -682,6 +691,7 @@ void BeamInterpolation<DataTypes>::setLength(unsigned int edgeInList, Real &leng
 template<class DataTypes>
 void BeamInterpolation<DataTypes>::addCollisionOnBeam(unsigned int b)
 {
+    std::cout << "BeamInterpolation<DataTypes>::addCollisionOnBeam" << std::endl;
     auto beamCollisList = sofa::helper::getWriteOnlyAccessor(d_beamCollision);
     beamCollisList.push_back(b);
 }
@@ -696,6 +706,7 @@ void BeamInterpolation<DataTypes>::clearCollisionOnBeam()
 template<class DataTypes>
 void BeamInterpolation<DataTypes>::getSplineRestTransform(unsigned int edgeInList, Transform &local_H_local0_rest, Transform &local_H_local1_rest)
 {
+    std::cout << "BeamInterpolation<DataTypes>::getSplineRestTransform" << std::endl;
     if(d_straight.getValue())
     {
         /// the beam is straight: local is in the middle of local0 and local1
@@ -745,6 +756,7 @@ int BeamInterpolation<DataTypes>::getNodeIndices(unsigned int edgeInList,
                                                  unsigned int &node0Idx,
                                                  unsigned int &node1Idx )
 {
+    std::cout << "BeamInterpolation<DataTypes>::getNodeIndices" << std::endl;
     if ( m_topologyEdges == nullptr)
     {
         msg_error() <<"This object does not have edge topology defined (computation halted). " ;
@@ -933,6 +945,7 @@ void BeamInterpolation<DataTypes>::interpolatePointUsingSpline(unsigned int edge
                                                                bool recompute,
                                                                const ConstVecCoordId &vecXId)
 {
+    std::cout << "BeamInterpolation<DataTypes>::interpolatePointUsingSpline" << std::endl;
     if(recompute)
     {
         /// <<" interpolatePointUsingSpline : "<< edgeInList<<"  xbary="<<baryCoord<<"  localPos"<<localPos<<std::endl;

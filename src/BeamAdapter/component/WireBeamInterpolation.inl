@@ -90,6 +90,7 @@ template<class DataTypes>
 void WireBeamInterpolation<DataTypes>::addBeam(const BaseMeshTopology::EdgeID &eID  , const Real &length, const Real &x0, const Real &x1,
                                                const Transform &DOF0_H_Node0, const Transform &DOF1_H_Node1)
 {
+    std::cout << "WireBeamInterpolation<DataTypes>::addBeam" << std::endl;
     auto edgeList = sofa::helper::getWriteOnlyAccessor(this->d_edgeList);
     auto lengthList = sofa::helper::getWriteOnlyAccessor(this->d_lengthList);
     auto DOF0TransformNode0 = sofa::helper::getWriteOnlyAccessor(this->d_DOF0TransformNode0);
@@ -122,6 +123,7 @@ void WireBeamInterpolation<DataTypes>::getRestTransform(unsigned int edgeInList,
 template<class DataTypes>
 void WireBeamInterpolation<DataTypes>::getSplineRestTransform(unsigned int edgeInList, Transform &local_H_local0_rest, Transform &local_H_local1_rest)
 {
+    std::cout << "WireBeamInterpolation<DataTypes>::getSplineRestTransform" << std::endl;
     if (this->isControlled() && this->m_restShape!=nullptr)
     {
         const Vec2 &curvAbs = this->d_curvAbsList.getValue()[edgeInList];
@@ -155,6 +157,7 @@ void WireBeamInterpolation<DataTypes>::getSplineRestTransform(unsigned int edgeI
 template<class DataTypes>
 void WireBeamInterpolation<DataTypes>::getCurvAbsAtBeam(const unsigned int &edgeInList_input, const Real& baryCoord_input, Real& x_output)
 {
+    std::cout << "WireBeamInterpolation<DataTypes>::getCurvAbsAtBeam" << std::endl;
     ///TODO(dmarchal 2017-05-17): Please tell who and when it will be done.
     // TODO : version plus complete prenant en compte les coupures et autres particularites de ce modele ?
     x_output = 0;
@@ -167,6 +170,7 @@ void WireBeamInterpolation<DataTypes>::getCurvAbsAtBeam(const unsigned int &edge
 template<class DataTypes>
 bool WireBeamInterpolation<DataTypes>::getApproximateCurvAbs(const Vec3& x_input, const VecCoord& x, Real& x_output)
 {
+    std::cout << "WireBeamInterpolation<DataTypes>::getApproximateCurvAbs" << std::endl;
     if(x.size() <= 1)
     {
         x_output = 0.0;
