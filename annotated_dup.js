@@ -57,6 +57,9 @@ var annotated_dup =
           [ "SteerableCatheter", "classsofa_1_1component_1_1engine_1_1_steerable_catheter.html", "classsofa_1_1component_1_1engine_1_1_steerable_catheter" ]
         ] ],
         [ "fem", null, [
+          [ "_basebeaminterpolation_", null, [
+            [ "BaseBeamInterpolation", "classsofa_1_1component_1_1fem_1_1__basebeaminterpolation___1_1_base_beam_interpolation.html", "classsofa_1_1component_1_1fem_1_1__basebeaminterpolation___1_1_base_beam_interpolation" ]
+          ] ],
           [ "_beaminterpolation_", "namespacesofa_1_1component_1_1fem_1_1__beaminterpolation__.html", [
             [ "BeamInterpolation", "classsofa_1_1component_1_1fem_1_1__beaminterpolation___1_1_beam_interpolation.html", "classsofa_1_1component_1_1fem_1_1__beaminterpolation___1_1_beam_interpolation" ]
           ] ],
@@ -84,6 +87,5 @@ var annotated_dup =
         [ "DeprecatedComponent", "classsofa_1_1component_1_1_deprecated_component.html", "classsofa_1_1component_1_1_deprecated_component" ]
       ] ]
     ] ],
-    [ "AdaptiveBeamConstraint", "class_adaptive_beam_constraint.html", null ],
     [ "ContactMapper", "class_contact_mapper.html", null ]
 ];
