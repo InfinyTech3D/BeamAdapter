@@ -250,6 +250,8 @@ void AdaptiveBeamMapping< TIn, TOut>::apply(const MechanicalParams* mparams, Dat
     auto apply_impl = [&](const auto& range)
     {
         auto elementID = std::distance(m_pointBeamDistribution.begin(), range.start);
+        size_t total = m_pointBeamDistribution.size();
+
         for (auto it = range.start; it != range.end; ++it, ++elementID)
         {
             const auto& pointBeamDistribution = m_pointBeamDistribution[elementID];
@@ -258,6 +260,26 @@ void AdaptiveBeamMapping< TIn, TOut>::apply(const MechanicalParams* mparams, Dat
             const Vec3 localPos(0., pointBeamDistribution.baryPoint[1], pointBeamDistribution.baryPoint[2]);
             l_adaptativebeamInterpolation->interpolatePointUsingSpline(pointBeamDistribution.beamId, pointBeamDistribution.baryPoint[0], localPos, in, pos, false, xtest);
 
+            
+
+            if (elementID >= total - 1)
+            {
+                std::cerr
+                    << "Mapping = "
+                    << l_adaptativebeamInterpolation->getName()
+                    << " | elementID = "
+                    << elementID
+                    << " | beamId = "
+                    << pointBeamDistribution.beamId
+                    << " | xBary = "
+                    << pointBeamDistribution.baryPoint[0]
+                    << " | pos = "
+                    << pos[0] << " "
+                    << pos[1] << " "
+                    << pos[2]
+                    << std::endl;
+            }
+           
             if (m_isSubMapping)
             {
                 if (!m_idPointSubMap.empty())
@@ -660,6 +682,7 @@ void AdaptiveBeamMapping< TIn, TOut>::computeDistribution()
                 const unsigned int beamId = (int)floor(points[i][0]);
                 msg_warning_when(beamId > numBeams-1) << "Points[" << i << "][0] = " << beamId << " is defined outside of the beam length";
                 m_pointBeamDistribution.emplace_back( beamId, Vec3{ points[i][0] - floor(points[i][0]), points[i][1], points[i][2]});
+                std::cerr << "Points[" << i << "][0] = " << beamId << std::endl;
             }
         }
     }
