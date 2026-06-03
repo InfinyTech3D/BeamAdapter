@@ -43,6 +43,7 @@ extern void registerBeamLengthMapping(sofa::core::ObjectFactory* factory);
 extern void registerMultiAdaptiveBeamMapping(sofa::core::ObjectFactory* factory);
 extern void registerRodMeshSection(sofa::core::ObjectFactory* factory);
 extern void registerRodSpireSection(sofa::core::ObjectFactory* factory);
+extern void registerRodSteerableSection(sofa::core::ObjectFactory* factory);
 extern void registerRodStraightSection(sofa::core::ObjectFactory* factory);
 extern void registerBeamProjectionDifferenceMultiMapping(sofa::core::ObjectFactory* factory);
 
@@ -112,6 +113,7 @@ void registerObjects(sofa::core::ObjectFactory* factory)
     registerMultiAdaptiveBeamMapping(factory);
     registerRodMeshSection(factory);
     registerRodSpireSection(factory);
+    registerRodSteerableSection(factory);
     registerRodStraightSection(factory);
     registerBeamProjectionDifferenceMultiMapping(factory);
 }
