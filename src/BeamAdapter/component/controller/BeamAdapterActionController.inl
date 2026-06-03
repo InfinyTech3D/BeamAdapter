@@ -82,13 +82,13 @@ void BeamAdapterActionController<DataTypes>::onKeyPressedEvent(core::objectmodel
     case 'D':
         m_currAction = BeamAdapterAction::DROP_TOOL;
         break;
-    case '2':
+    case '3':
         m_currAction = BeamAdapterAction::USE_TOOL_2;
         break;
-    case '1':
+    case '2':
         m_currAction = BeamAdapterAction::USE_TOOL_1;
         break;
-    case '0':
+    case '1':
         m_currAction = BeamAdapterAction::USE_TOOL_0;
         break;
     case 20: // droite = 20
