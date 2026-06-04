@@ -63,6 +63,8 @@ set(HEADER_FILES
     ${BEAMADAPTER_SRC}/component/model/RodMeshSection.inl
     ${BEAMADAPTER_SRC}/component/model/RodSpireSection.h
     ${BEAMADAPTER_SRC}/component/model/RodSpireSection.inl
+    ${BEAMADAPTER_SRC}/component/model/RodSteerableSection.h
+    ${BEAMADAPTER_SRC}/component/model/RodSteerableSection.inl
     ${BEAMADAPTER_SRC}/component/model/RodStraightSection.h
     ${BEAMADAPTER_SRC}/component/model/RodStraightSection.inl
 
@@ -99,6 +101,7 @@ set(SOURCE_FILES
     ${BEAMADAPTER_SRC}/component/model/BaseRodSectionMaterial.cpp
     ${BEAMADAPTER_SRC}/component/model/RodMeshSection.cpp
     ${BEAMADAPTER_SRC}/component/model/RodSpireSection.cpp
+    ${BEAMADAPTER_SRC}/component/model/RodSteerableSection.cpp
     ${BEAMADAPTER_SRC}/component/model/RodStraightSection.cpp
 )
 
