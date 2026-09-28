@@ -188,8 +188,11 @@ void BaseBeamInterpolation<DataTypes>::addBeam(const EdgeID eID, const Real leng
     DOF0TransformNode0.push_back(Transform(Vec3(0, 0, 0), QuatX));
     DOF1TransformNode1.push_back(Transform(Vec3(0, 0, 0), QuatX));
 
-    const BaseMeshTopology::Edge& edge = l_topology->getEdge(eID);
-	d_wireTipIndex.setValue(edge[1]);
+	if (l_topology)
+    {
+        const BaseMeshTopology::Edge& edge = l_topology->getEdge(eID);
+	    d_wireTipIndex.setValue(edge[1]);
+    }
 }
 
 
